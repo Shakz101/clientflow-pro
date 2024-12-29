@@ -13,7 +13,7 @@ import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, path: "/dashboard" },
-  { title: "Clients", icon: Users, path: "/dashboard/clients" },
+  { title: "Clients", icon: Users, path: "/dashboard" }, // Updated this path
   { title: "Settings", icon: Settings, path: "/dashboard/settings" },
 ];
 
@@ -31,7 +31,11 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={location.pathname === item.path}
+                    isActive={
+                      item.path === "/dashboard"
+                        ? location.pathname === item.path
+                        : location.pathname.startsWith(item.path)
+                    }
                   >
                     <Link to={item.path}>
                       <item.icon className="h-4 w-4" />
