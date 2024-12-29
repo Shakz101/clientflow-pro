@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppSidebar } from "@/components/layout/AppSidebar";
+import Home from "./pages/Home";
 import Index from "./pages/Index";
 
 const queryClient = new QueryClient();
@@ -16,17 +17,25 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SidebarProvider>
-          <div className="min-h-screen flex w-full">
-            <AppSidebar />
-            <div className="flex-1">
-              <AppHeader />
-              <Routes>
-                <Route path="/" element={<Index />} />
-              </Routes>
-            </div>
-          </div>
-        </SidebarProvider>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <SidebarProvider>
+                <div className="min-h-screen flex w-full">
+                  <AppSidebar />
+                  <div className="flex-1">
+                    <AppHeader />
+                    <Routes>
+                      <Route index element={<Index />} />
+                    </Routes>
+                  </div>
+                </div>
+              </SidebarProvider>
+            }
+          />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

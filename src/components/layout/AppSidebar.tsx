@@ -12,9 +12,9 @@ import {
 import { Link, useLocation } from "react-router-dom";
 
 const menuItems = [
-  { title: "Dashboard", icon: Home, path: "/" },
-  { title: "Clients", icon: Users, path: "/clients" },
-  { title: "Settings", icon: Settings, path: "/settings" },
+  { title: "Dashboard", icon: Home, path: "/dashboard" },
+  { title: "Clients", icon: Users, path: "/dashboard/clients" },
+  { title: "Settings", icon: Settings, path: "/dashboard/settings" },
 ];
 
 export function AppSidebar() {
@@ -45,7 +45,7 @@ export function AppSidebar() {
         </SidebarGroup>
         <SidebarGroup className="mt-auto pb-4">
           <Link
-            to="/clients/new"
+            to="/dashboard/clients/new"
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-accent rounded-md"
           >
             <PlusCircle className="h-4 w-4" />
