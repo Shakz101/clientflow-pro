@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ArrowRight, CheckCircle2, Users, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle2, Users, Zap, LogIn } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -76,7 +76,10 @@ export default function Home() {
                 <Link to="/register">Get Started</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="text-lg px-8 glass-button">
-                <Link to="/demo">Request Demo</Link>
+                <Link to="/login">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Login
+                </Link>
               </Button>
             </div>
           </div>

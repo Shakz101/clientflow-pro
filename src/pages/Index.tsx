@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ClientCard } from "@/components/clients/ClientCard";
 import { Link } from "react-router-dom";
-import { PlusCircle, LogIn } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 
 const mockClients = [
   {
@@ -43,12 +43,6 @@ const Index = () => {
             </p>
           </div>
           <div className="flex gap-4">
-            <Button asChild variant="outline" className="glass-button">
-              <Link to="/login">
-                <LogIn className="mr-2 h-4 w-4" />
-                Login
-              </Link>
-            </Button>
             <Button asChild className="glass-button border-none">
               <Link to="/clients/new">
                 <PlusCircle className="mr-2 h-4 w-4" />
