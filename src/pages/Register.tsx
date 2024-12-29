@@ -9,6 +9,8 @@ import { ReviewConfirmation } from "@/components/register/ReviewConfirmation";
 import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export type RegistrationData = {
   companyName: string;
@@ -25,6 +27,7 @@ export type RegistrationData = {
 
 const Register = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
   const [registrationData, setRegistrationData] = useState<RegistrationData>({
     companyName: "",
     contactPerson: "",
@@ -37,7 +40,7 @@ const Register = () => {
     otherTools: [],
     termsAccepted: false,
   });
-  const { toast } = useToast();
+  const { toast: toastOld } = useToast();
 
   const updateRegistrationData = (data: Partial<RegistrationData>) => {
     setRegistrationData((prev) => ({ ...prev, ...data }));
@@ -69,18 +72,31 @@ const Register = () => {
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes("already registered")) {
+          toast.error("This email is already registered. Please login instead.", {
+            action: {
+              label: "Go to Login",
+              onClick: () => navigate("/login")
+            }
+          });
+        } else {
+          toast.error(error.message || "Registration failed. Please try again.");
+        }
+        return;
+      }
 
-      toast({
-        title: "Registration successful!",
-        description: "Welcome aboard! Check your email for next steps.",
+      toast.success("Registration successful! Please check your email for verification.", {
+        duration: 5000
       });
+      
+      // Redirect to login page after successful registration
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+      
     } catch (error: any) {
-      toast({
-        title: "Registration failed",
-        description: error.message || "Please try again later.",
-        variant: "destructive",
-      });
+      toast.error(error.message || "An unexpected error occurred. Please try again.");
     }
   };
 
