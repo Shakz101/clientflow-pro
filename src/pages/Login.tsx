@@ -28,16 +28,32 @@ const Login = () => {
       });
 
       if (error) {
-        toast.error(error.message);
+        if (error.message.includes("Invalid login credentials")) {
+          toast.error("Invalid login credentials", {
+            description: "Please check your email and password and try again.",
+            duration: 5000
+          });
+        } else {
+          toast.error("Login failed", {
+            description: error.message,
+            duration: 5000
+          });
+        }
+        console.error("Login error details:", error);
         return;
       }
 
       if (data.user) {
-        toast.success("Successfully logged in!");
+        toast.success("Successfully logged in!", {
+          duration: 3000
+        });
         navigate("/dashboard");
       }
     } catch (error) {
-      toast.error("An error occurred during login");
+      toast.error("An unexpected error occurred", {
+        description: "Please try again later.",
+        duration: 5000
+      });
       console.error("Login error:", error);
     }
   };
