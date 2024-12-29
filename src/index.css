@@ -41,19 +41,19 @@
     @apply border-border;
   }
   body {
-    @apply bg-gradient-to-br from-blue-50 via-sky-50 to-cyan-50;
+    @apply bg-gradient-to-br from-blue-100 via-sky-100 to-cyan-100;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
 
 .glass {
-  @apply bg-white/30 backdrop-blur-lg border border-white/20 shadow-xl;
+  @apply bg-white/10 backdrop-blur-md border border-white/10 shadow-xl;
 }
 
 .glass-card {
-  @apply glass hover:bg-white/40 transition-all duration-300;
+  @apply glass hover:bg-white/20 transition-all duration-300;
 }
 
 .glass-button {
-  @apply glass hover:bg-white/50 active:bg-white/40 transition-all duration-300;
+  @apply glass hover:bg-white/30 active:bg-white/20 transition-all duration-300;
 }
