@@ -9,6 +9,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
+import Login from "./pages/Login";
 import NewClient from "./pages/clients/New";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
           <Route
             path="/dashboard/*"
             element={
