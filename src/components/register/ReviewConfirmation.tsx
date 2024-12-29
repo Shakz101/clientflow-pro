@@ -77,6 +77,7 @@ export const ReviewConfirmation = ({
               <p>Contact Person: {data.contactPerson}</p>
               <p>Email: {data.email}</p>
               {data.phone && <p>Phone: {data.phone}</p>}
+              <p>Password: {data.password ? "••••••" : "Not set"}</p>
             </div>
             <div>
               <h3 className="font-medium">Business Type</h3>

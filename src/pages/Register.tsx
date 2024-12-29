@@ -3,16 +3,19 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BasicDetailsForm } from "@/components/register/BasicDetailsForm";
 import { BusinessTypeForm } from "@/components/register/BusinessTypeForm";
+import { PasswordForm } from "@/components/register/PasswordForm";
 import { ToolsIntegrationsForm } from "@/components/register/ToolsIntegrationsForm";
 import { ReviewConfirmation } from "@/components/register/ReviewConfirmation";
 import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
+import { supabase } from "@/lib/supabase";
 
 export type RegistrationData = {
   companyName: string;
   contactPerson: string;
   email: string;
   phone?: string;
+  password?: string;
   businessType: string;
   otherBusinessType?: string;
   selectedTools: string[];
@@ -27,6 +30,7 @@ const Register = () => {
     contactPerson: "",
     email: "",
     phone: "",
+    password: "",
     businessType: "",
     otherBusinessType: "",
     selectedTools: [],
@@ -40,7 +44,7 @@ const Register = () => {
   };
 
   const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, 4));
+    setStep((prev) => Math.min(prev + 1, 5));
   };
 
   const handleBack = () => {
@@ -49,23 +53,38 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
-      // Here you would typically send the data to your backend
-      console.log("Registration data:", registrationData);
+      const { data, error } = await supabase.auth.signUp({
+        email: registrationData.email,
+        password: registrationData.password!,
+        options: {
+          data: {
+            company_name: registrationData.companyName,
+            contact_person: registrationData.contactPerson,
+            phone: registrationData.phone,
+            business_type: registrationData.businessType,
+            other_business_type: registrationData.otherBusinessType,
+            selected_tools: registrationData.selectedTools,
+            other_tools: registrationData.otherTools,
+          }
+        }
+      });
+
+      if (error) throw error;
+
       toast({
         title: "Registration successful!",
         description: "Welcome aboard! Check your email for next steps.",
       });
-      // Redirect to dashboard or onboarding
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Registration failed",
-        description: "Please try again later.",
+        description: error.message || "Please try again later.",
         variant: "destructive",
       });
     }
   };
 
-  const progress = ((step - 1) / 3) * 100;
+  const progress = ((step - 1) / 4) * 100;
 
   return (
     <div className="min-h-screen flex flex-col animate-fade-in">
@@ -75,7 +94,7 @@ const Register = () => {
             Create Your Account
           </h1>
           <div className="text-sm text-muted-foreground">
-            Step {step} of 4
+            Step {step} of 5
           </div>
         </div>
       </header>
@@ -89,8 +108,9 @@ const Register = () => {
               <h2 className="text-xl font-semibold">
                 {step === 1 && "Tell us about your business"}
                 {step === 2 && "What type of business are you?"}
-                {step === 3 && "What tools do you use?"}
-                {step === 4 && "Review your information"}
+                {step === 3 && "Create your password"}
+                {step === 4 && "What tools do you use?"}
+                {step === 5 && "Review your information"}
               </h2>
             </div>
             <Progress value={progress} className="h-2" />
@@ -112,7 +132,7 @@ const Register = () => {
             />
           )}
           {step === 3 && (
-            <ToolsIntegrationsForm
+            <PasswordForm
               data={registrationData}
               updateData={updateRegistrationData}
               onNext={handleNext}
@@ -120,6 +140,14 @@ const Register = () => {
             />
           )}
           {step === 4 && (
+            <ToolsIntegrationsForm
+              data={registrationData}
+              updateData={updateRegistrationData}
+              onNext={handleNext}
+              onBack={handleBack}
+            />
+          )}
+          {step === 5 && (
             <ReviewConfirmation
               data={registrationData}
               updateData={updateRegistrationData}
