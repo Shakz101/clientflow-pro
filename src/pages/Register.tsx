@@ -6,7 +6,6 @@ import { BusinessTypeForm } from "@/components/register/BusinessTypeForm";
 import { PasswordForm } from "@/components/register/PasswordForm";
 import { ToolsIntegrationsForm } from "@/components/register/ToolsIntegrationsForm";
 import { ReviewConfirmation } from "@/components/register/ReviewConfirmation";
-import { useToast } from "@/components/ui/use-toast";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
@@ -40,7 +39,6 @@ const Register = () => {
     otherTools: [],
     termsAccepted: false,
   });
-  const { toast: toastOld } = useToast();
 
   const updateRegistrationData = (data: Partial<RegistrationData>) => {
     setRegistrationData((prev) => ({ ...prev, ...data }));
@@ -73,30 +71,40 @@ const Register = () => {
       });
 
       if (error) {
-        if (error.message.includes("already registered")) {
-          toast.error("This email is already registered. Please login instead.", {
+        if (error.message.includes("already registered") || error.message.includes("already exists")) {
+          toast.error("This email is already registered.", {
+            description: "Please try logging in instead.",
             action: {
               label: "Go to Login",
               onClick: () => navigate("/login")
-            }
+            },
+            duration: 5000
           });
-        } else {
-          toast.error(error.message || "Registration failed. Please try again.");
+          return;
         }
+        
+        toast.error("Registration failed", {
+          description: error.message,
+          duration: 5000
+        });
         return;
       }
 
-      toast.success("Registration successful! Please check your email for verification.", {
+      toast.success("Registration successful!", {
+        description: "Please check your email for verification.",
         duration: 5000
       });
       
-      // Redirect to login page after successful registration
       setTimeout(() => {
         navigate("/login");
       }, 2000);
       
     } catch (error: any) {
-      toast.error(error.message || "An unexpected error occurred. Please try again.");
+      toast.error("An unexpected error occurred", {
+        description: "Please try again later.",
+        duration: 5000
+      });
+      console.error("Registration error:", error);
     }
   };
 
