@@ -2,32 +2,23 @@ import { Button } from "@/components/ui/button";
 import { ClientCard } from "@/components/clients/ClientCard";
 import { Link } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
-
-const mockClients = [
-  {
-    id: "1",
-    name: "John Smith",
-    company: "Tech Solutions Inc",
-    status: "active",
-    email: "john@techsolutions.com",
-  },
-  {
-    id: "2",
-    name: "Sarah Johnson",
-    company: "Digital Marketing Co",
-    status: "pending",
-    email: "sarah@digitalmarketing.com",
-  },
-  {
-    id: "3",
-    name: "Mike Brown",
-    company: "Innovative Startup",
-    status: "inactive",
-    email: "mike@innovative.com",
-  },
-] as const;
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/lib/supabase";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const Index = () => {
+  const { data: clients, isLoading } = useQuery({
+    queryKey: ['clients'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('clients')
+        .select('*');
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <div className="container py-6 animate-fade-in relative">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
@@ -44,7 +35,7 @@ const Index = () => {
           </div>
           <div className="flex gap-4">
             <Button asChild className="glass-button border-none">
-              <Link to="/clients/new">
+              <Link to="/dashboard/clients/new">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 Add New Client
               </Link>
@@ -53,11 +44,34 @@ const Index = () => {
         </div>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 relative">
-        {mockClients.map((client) => (
-          <ClientCard key={client.id} client={client} />
-        ))}
-      </div>
+      {isLoading ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="p-6 rounded-lg border bg-card">
+              <Skeleton className="h-6 w-3/4 mb-4" />
+              <Skeleton className="h-4 w-1/2 mb-2" />
+              <Skeleton className="h-4 w-2/3" />
+            </div>
+          ))}
+        </div>
+      ) : clients?.length === 0 ? (
+        <div className="text-center py-12">
+          <h3 className="text-lg font-semibold mb-2">No clients yet</h3>
+          <p className="text-muted-foreground mb-4">Get started by adding your first client</p>
+          <Button asChild>
+            <Link to="/dashboard/clients/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add New Client
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 relative">
+          {clients?.map((client) => (
+            <ClientCard key={client.id} client={client} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
