@@ -29,23 +29,29 @@ const mockClients = [
 
 const Index = () => {
   return (
-    <div className="container py-6 animate-fade-in">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-muted-foreground mt-1">
-            Manage your clients and campaigns
-          </p>
+    <div className="container py-6 animate-fade-in relative">
+      <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+      
+      <div className="glass rounded-2xl p-8 mb-8 relative">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+              Welcome Back
+            </h1>
+            <p className="text-muted-foreground mt-1">
+              Manage your clients and campaigns
+            </p>
+          </div>
+          <Button asChild className="glass-button border-none">
+            <Link to="/clients/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Add New Client
+            </Link>
+          </Button>
         </div>
-        <Button asChild>
-          <Link to="/clients/new">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add New Client
-          </Link>
-        </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 relative">
         {mockClients.map((client) => (
           <ClientCard key={client.id} client={client} />
         ))}
