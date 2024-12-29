@@ -19,6 +19,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useState } from "react";
+import { SlideShow } from "./SlideShow";
 
 const formSchema = z.object({
   termsAccepted: z.boolean().refine((val) => val === true, {
@@ -39,6 +41,8 @@ export const ReviewConfirmation = ({
   onSubmit,
   onBack,
 }: Props) => {
+  const [showSlideShow, setShowSlideShow] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,7 +53,12 @@ export const ReviewConfirmation = ({
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
     updateData(values);
     onSubmit();
+    setShowSlideShow(true);
   };
+
+  if (showSlideShow) {
+    return <SlideShow selectedTools={data.selectedTools} />;
+  }
 
   return (
     <Form {...form}>
@@ -72,7 +81,9 @@ export const ReviewConfirmation = ({
             <div>
               <h3 className="font-medium">Business Type</h3>
               <p>{data.businessType}</p>
-              {data.otherBusinessType && <p>Specified as: {data.otherBusinessType}</p>}
+              {data.otherBusinessType && (
+                <p>Specified as: {data.otherBusinessType}</p>
+              )}
             </div>
             <div>
               <h3 className="font-medium">Selected Tools</h3>
@@ -94,15 +105,10 @@ export const ReviewConfirmation = ({
           render={({ field }) => (
             <FormItem className="flex flex-row items-start space-x-3 space-y-0">
               <FormControl>
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
+                <Checkbox checked={field.value} onCheckedChange={field.onChange} />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>
-                  I agree to the terms and conditions
-                </FormLabel>
+                <FormLabel>I agree to the terms and conditions</FormLabel>
               </div>
             </FormItem>
           )}
@@ -110,7 +116,12 @@ export const ReviewConfirmation = ({
         <FormMessage />
 
         <div className="flex justify-between">
-          <Button type="button" variant="outline" onClick={onBack} className="glass-button">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onBack}
+            className="glass-button"
+          >
             Back
           </Button>
           <Button type="submit" className="glass-button">
