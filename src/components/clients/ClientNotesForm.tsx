@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
+import { Wand2 } from "lucide-react";
 
 const formSchema = z.object({
   notes: z.string().optional(),
@@ -41,9 +42,33 @@ export const ClientNotesForm = ({
     onSubmit();
   };
 
+  const fillDemoData = () => {
+    const demoNotes = [
+      "Client interested in expanding their digital marketing presence. Key focus areas include social media advertising and email campaigns.",
+      "Requires integration with existing CRM system. Monthly review meetings scheduled for the first Tuesday of each month.",
+      "High-priority client with multiple business units. Main point of contact prefers communication via email.",
+    ];
+    
+    const randomNote = demoNotes[Math.floor(Math.random() * demoNotes.length)];
+    form.setValue("notes", randomNote);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={fillDemoData}
+            className="gap-2"
+          >
+            <Wand2 className="w-4 h-4" />
+            Fill Demo Data
+          </Button>
+        </div>
+
         <FormField
           control={form.control}
           name="notes"

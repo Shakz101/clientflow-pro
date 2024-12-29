@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Wand2 } from "lucide-react";
 
 const platforms = [
   { id: "stripe", label: "Stripe" },
@@ -51,11 +52,39 @@ export const PlatformIntegrationForm = ({
     onNext();
   };
 
+  const fillDemoData = () => {
+    // Randomly select 2-3 platforms
+    const numPlatforms = Math.floor(Math.random() * 2) + 2;
+    const shuffledPlatforms = [...platforms].sort(() => Math.random() - 0.5);
+    const selectedPlatforms = shuffledPlatforms.slice(0, numPlatforms).map(p => p.id);
+    
+    const demoDetails: Record<string, string> = {};
+    selectedPlatforms.forEach(platform => {
+      demoDetails[platform] = `demo_${platform}_${Math.random().toString(36).substring(7)}`;
+    });
+
+    form.setValue("platforms", selectedPlatforms);
+    form.setValue("platformDetails", demoDetails);
+  };
+
   const selectedPlatforms = form.watch("platforms");
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={fillDemoData}
+            className="gap-2"
+          >
+            <Wand2 className="w-4 h-4" />
+            Fill Demo Data
+          </Button>
+        </div>
+
         <FormField
           control={form.control}
           name="platforms"

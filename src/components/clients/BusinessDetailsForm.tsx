@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Wand2 } from "lucide-react";
 
 const formSchema = z.object({
   businessName: z.string().min(2, "Business name must be at least 2 characters"),
@@ -62,9 +63,32 @@ export const BusinessDetailsForm = ({
     onNext();
   };
 
+  const fillDemoData = () => {
+    const companies = ["Acme Corp", "TechFlow", "InnovateLabs", "GlobalSolutions", "NextGen Systems"];
+    const randomCompany = companies[Math.floor(Math.random() * companies.length)];
+    const randomIndustry = industries[Math.floor(Math.random() * (industries.length - 1))]; // Exclude "Other"
+    
+    form.setValue("businessName", randomCompany);
+    form.setValue("industry", randomIndustry);
+    form.setValue("website", `https://www.${randomCompany.toLowerCase().replace(/\s+/g, '')}.com`);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={fillDemoData}
+            className="gap-2"
+          >
+            <Wand2 className="w-4 h-4" />
+            Fill Demo Data
+          </Button>
+        </div>
+
         <FormField
           control={form.control}
           name="businessName"
