@@ -13,16 +13,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 221.2 83.2% 53.3%;
+    --primary: 255 92% 76%;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: 210 40% 96.1%;
+    --secondary: 217 91% 60%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
+    --accent: 262 83% 58%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -41,7 +41,19 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+}
+
+.glass {
+  @apply bg-white/30 backdrop-blur-lg border border-white/20 shadow-xl;
+}
+
+.glass-card {
+  @apply glass hover:bg-white/40 transition-all duration-300;
+}
+
+.glass-button {
+  @apply glass hover:bg-white/50 active:bg-white/40 transition-all duration-300;
 }

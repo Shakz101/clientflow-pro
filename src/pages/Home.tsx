@@ -59,8 +59,9 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-secondary/10">
-        <div className="max-w-7xl mx-auto">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
+        <div className="glass rounded-2xl max-w-7xl mx-auto p-8 relative z-10">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-8 animate-fade-in">
               Streamline Your Client Onboarding
@@ -71,10 +72,10 @@ export default function Home() {
               manage relationships, and scale operations efficiently.
             </p>
             <div className="flex justify-center gap-4 animate-fade-in [animation-delay:400ms]">
-              <Button asChild size="lg" className="text-lg px-8">
+              <Button asChild size="lg" className="text-lg px-8 glass-button">
                 <Link to="/register">Get Started</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="text-lg px-8">
+              <Button asChild size="lg" variant="outline" className="text-lg px-8 glass-button">
                 <Link to="/demo">Request Demo</Link>
               </Button>
             </div>
@@ -90,7 +91,7 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             {features.map((feature) => (
-              <Card key={feature.title} className="hover:shadow-lg transition-shadow">
+              <Card key={feature.title} className="glass-card border-none">
                 <CardHeader>
                   <feature.icon className="h-12 w-12 text-primary mb-4" />
                   <CardTitle>{feature.title}</CardTitle>
@@ -107,7 +108,7 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">
             What Our Clients Say
@@ -117,7 +118,7 @@ export default function Home() {
               <CarouselContent>
                 {testimonials.map((testimonial, index) => (
                   <CarouselItem key={index}>
-                    <Card className="border-none shadow-none bg-transparent">
+                    <Card className="glass-card border-none">
                       <CardContent className="text-center px-8 py-10">
                         <p className="text-xl text-gray-600 mb-6 italic">
                           "{testimonial.quote}"
@@ -135,8 +136,8 @@ export default function Home() {
                   </CarouselItem>
                 ))}
               </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
+              <CarouselPrevious className="glass-button" />
+              <CarouselNext className="glass-button" />
             </Carousel>
           </div>
         </div>
@@ -145,19 +146,21 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-6">
-            Ready to Transform Your Agency?
-          </h2>
-          <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-            Join hundreds of agencies already using our platform to streamline
-            their operations and delight their clients.
-          </p>
-          <Button asChild size="lg" className="text-lg px-8">
-            <Link to="/register" className="inline-flex items-center">
-              Get Started Now
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
+          <div className="glass rounded-2xl p-12">
+            <h2 className="text-3xl font-bold mb-6">
+              Ready to Transform Your Agency?
+            </h2>
+            <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
+              Join hundreds of agencies already using our platform to streamline
+              their operations and delight their clients.
+            </p>
+            <Button asChild size="lg" className="text-lg px-8 glass-button">
+              <Link to="/register" className="inline-flex items-center">
+                Get Started Now
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Link>
+            </Button>
+          </div>
         </div>
       </section>
     </div>
