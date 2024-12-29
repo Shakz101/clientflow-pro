@@ -9,6 +9,7 @@ import { AppSidebar } from "@/components/layout/AppSidebar";
 import Home from "./pages/Home";
 import Index from "./pages/Index";
 import Register from "./pages/Register";
+import NewClient from "./pages/clients/New";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
                     <AppHeader />
                     <Routes>
                       <Route index element={<Index />} />
+                      <Route path="clients/new" element={<NewClient />} />
                     </Routes>
                   </div>
                 </div>
