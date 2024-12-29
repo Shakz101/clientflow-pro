@@ -5,6 +5,13 @@ import { PlusCircle } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 const Index = () => {
   const { data: clients, isLoading } = useQuery({
@@ -12,7 +19,9 @@ const Index = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('clients')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(3);
       
       if (error) throw error;
       return data;
@@ -44,34 +53,51 @@ const Index = () => {
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="p-6 rounded-lg border bg-card">
-              <Skeleton className="h-6 w-3/4 mb-4" />
-              <Skeleton className="h-4 w-1/2 mb-2" />
-              <Skeleton className="h-4 w-2/3" />
-            </div>
-          ))}
-        </div>
-      ) : clients?.length === 0 ? (
-        <div className="text-center py-12">
-          <h3 className="text-lg font-semibold mb-2">No clients yet</h3>
-          <p className="text-muted-foreground mb-4">Get started by adding your first client</p>
-          <Button asChild>
-            <Link to="/dashboard/clients/new">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add New Client
-            </Link>
+      <div className="glass rounded-2xl p-8 relative">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">Recent Clients</h2>
+          <Button asChild variant="ghost">
+            <Link to="/dashboard/clients">View All</Link>
           </Button>
         </div>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 relative">
-          {clients?.map((client) => (
-            <ClientCard key={client.id} client={client} />
-          ))}
-        </div>
-      )}
+
+        {isLoading ? (
+          <div className="flex gap-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="w-full">
+                <div className="p-6 rounded-lg border bg-card">
+                  <Skeleton className="h-6 w-3/4 mb-4" />
+                  <Skeleton className="h-4 w-1/2 mb-2" />
+                  <Skeleton className="h-4 w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : clients?.length === 0 ? (
+          <div className="text-center py-12">
+            <h3 className="text-lg font-semibold mb-2">No clients yet</h3>
+            <p className="text-muted-foreground mb-4">Get started by adding your first client</p>
+            <Button asChild>
+              <Link to="/dashboard/clients/new">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add New Client
+              </Link>
+            </Button>
+          </div>
+        ) : (
+          <Carousel className="w-full">
+            <CarouselContent className="-ml-2 md:-ml-4">
+              {clients?.map((client) => (
+                <CarouselItem key={client.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                  <ClientCard client={client} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="glass-button -left-4" />
+            <CarouselNext className="glass-button -right-4" />
+          </Carousel>
+        )}
+      </div>
     </div>
   );
 };
