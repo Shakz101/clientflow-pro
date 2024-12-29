@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { RegistrationData } from "@/pages/Register";
+import { Wand2 } from "lucide-react";
 
 const formSchema = z.object({
   companyName: z.string().min(2, "Company name must be at least 2 characters"),
@@ -42,9 +43,28 @@ export const BasicDetailsForm = ({ data, updateData, onNext }: Props) => {
     onNext();
   };
 
+  const fillDemoData = () => {
+    form.setValue("companyName", "Acme Inc.");
+    form.setValue("contactPerson", "John Doe");
+    form.setValue("email", "john@acme.com");
+    form.setValue("phone", "");
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="flex justify-end">
+          <Button
+            type="button"
+            onClick={fillDemoData}
+            className="glass-button"
+            size="sm"
+          >
+            <Wand2 className="w-4 h-4" />
+            Fill Demo Data
+          </Button>
+        </div>
+
         <FormField
           control={form.control}
           name="companyName"

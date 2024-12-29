@@ -55,5 +55,5 @@
 }
 
 .glass-button {
-  @apply glass hover:bg-white/30 active:bg-white/20 transition-all duration-300;
+  @apply glass hover:bg-white/30 active:bg-white/20 transition-all duration-300 text-gray-800 font-medium;
 }
