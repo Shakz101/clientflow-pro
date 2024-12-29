@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
+import { toast } from "sonner";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,12 +21,24 @@ const Login = () => {
   }, [navigate]);
 
   const fillDemoData = async () => {
-    const email = document.querySelector('input[type="email"]') as HTMLInputElement;
-    const password = document.querySelector('input[type="password"]') as HTMLInputElement;
-    
-    if (email && password) {
-      email.value = 'john@acme.com';
-      password.value = '123456';
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: 'john@acme.com',
+        password: '123456'
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      if (data.user) {
+        toast.success("Successfully logged in!");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error("An error occurred during login");
+      console.error("Login error:", error);
     }
   };
 
