@@ -14,6 +14,7 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import NewClient from "./pages/clients/New";
+import ClientDetails from "./pages/clients/Details";
 import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
@@ -72,6 +73,7 @@ const App = () => (
                       <Routes>
                         <Route index element={<Index />} />
                         <Route path="/clients/new" element={<NewClient />} />
+                        <Route path="/clients/:id" element={<ClientDetails />} />
                         <Route path="/settings" element={<Settings />} />
                       </Routes>
                     </div>
