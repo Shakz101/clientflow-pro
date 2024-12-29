@@ -22,21 +22,30 @@ const demoData = [
 
 interface SlideShowProps {
   selectedTools: string[];
+  onSubmit?: (formData: any) => Promise<void>;
 }
 
-export const SlideShow = ({ selectedTools }: SlideShowProps) => {
+export const SlideShow = ({ selectedTools, onSubmit }: SlideShowProps) => {
   const navigate = useNavigate();
   const [autoPlay, setAutoPlay] = useState(true);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!autoPlay) {
-        navigate("/dashboard");
+        if (onSubmit) {
+          onSubmit({
+            name: "Demo Client",
+            email: "demo@example.com",
+            tools: selectedTools
+          });
+        } else {
+          navigate("/dashboard");
+        }
       }
     }, 15000);
 
     return () => clearTimeout(timer);
-  }, [autoPlay, navigate]);
+  }, [autoPlay, navigate, onSubmit, selectedTools]);
 
   const slides = [
     {
