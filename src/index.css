@@ -38,18 +38,57 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border transition-colors duration-200;
+  }
+  body {
+    @apply min-h-screen;
   }
 }
 
 .glass {
-  @apply bg-white/10 backdrop-blur-md border border-white/10 shadow-xl;
+  @apply backdrop-blur-md border shadow-xl;
 }
 
 .glass-card {
-  @apply glass hover:bg-white/20 transition-all duration-300;
+  @apply glass transition-all duration-300;
 }
 
+/* Theme-specific glass effects */
+.bg-white .glass,
+.from-blue-100 .glass,
+.from-purple-100 .glass,
+.from-rose-100 .glass {
+  @apply bg-white/10 border-white/10 hover:bg-white/20;
+}
+
+.bg-gray-900 .glass {
+  @apply bg-black/10 border-white/5 hover:bg-black/20;
+}
+
+/* Theme-specific button styles */
 .glass-button {
-  @apply glass hover:bg-white/30 active:bg-white/20 transition-all duration-300 text-gray-800 font-medium;
+  @apply glass transition-all duration-300 font-medium;
+}
+
+.bg-white .glass-button,
+.from-blue-100 .glass-button,
+.from-purple-100 .glass-button,
+.from-rose-100 .glass-button {
+  @apply text-gray-800 hover:bg-white/30 active:bg-white/20;
+}
+
+.bg-gray-900 .glass-button {
+  @apply text-white hover:bg-white/10 active:bg-white/5;
+}
+
+/* Theme-specific hover card content */
+.bg-gray-900 .hover-card-content {
+  @apply bg-gray-800/90 text-white border-gray-700;
+}
+
+.bg-white .hover-card-content,
+.from-blue-100 .hover-card-content,
+.from-purple-100 .hover-card-content,
+.from-rose-100 .hover-card-content {
+  @apply bg-white/90 text-gray-800 border-gray-200;
 }
