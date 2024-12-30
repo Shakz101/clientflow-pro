@@ -14,11 +14,10 @@ import {
 } from "@/components/ui/carousel";
 
 const Index = () => {
-  const { data: session, isLoading: isLoadingSession } = useQuery({
+  const { data: session } = useQuery({
     queryKey: ['session'],
     queryFn: async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) throw error;
+      const { data: { session } } = await supabase.auth.getSession();
       return session;
     },
   });
@@ -41,21 +40,19 @@ const Index = () => {
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      if (!session?.user?.id) throw new Error('No user ID');
+      if (!session?.user?.id) return null;
       
       const { data, error } = await supabase
         .from('profiles')
         .select('company_name')
         .eq('id', session.user.id)
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
       return data;
     },
     enabled: !!session?.user?.id,
   });
-
-  const isLoading = isLoadingSession || isLoadingClients || isLoadingProfile;
 
   return (
     <div className="container py-6 animate-fade-in relative">
@@ -66,7 +63,7 @@ const Index = () => {
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Welcome Back{' '}
-              {isLoading ? (
+              {isLoadingProfile ? (
                 <Skeleton className="h-8 w-32 inline-block" />
               ) : (
                 <Link 
