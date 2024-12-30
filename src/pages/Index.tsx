@@ -14,7 +14,16 @@ import {
 } from "@/components/ui/carousel";
 
 const Index = () => {
-  const { data: clients, isLoading } = useQuery({
+  const { data: session, isLoading: isLoadingSession } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      return session;
+    },
+  });
+
+  const { data: clients, isLoading: isLoadingClients } = useQuery({
     queryKey: ['clients'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -26,22 +35,27 @@ const Index = () => {
       if (error) throw error;
       return data;
     },
+    enabled: !!session?.user?.id,
   });
 
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
-    queryKey: ['profile'],
+    queryKey: ['profile', session?.user?.id],
     queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      if (!session?.user?.id) throw new Error('No user ID');
+      
       const { data, error } = await supabase
         .from('profiles')
         .select('company_name')
-        .eq('id', user?.id)
+        .eq('id', session.user.id)
         .single();
       
       if (error) throw error;
       return data;
     },
+    enabled: !!session?.user?.id,
   });
+
+  const isLoading = isLoadingSession || isLoadingClients || isLoadingProfile;
 
   return (
     <div className="container py-6 animate-fade-in relative">
@@ -52,7 +66,7 @@ const Index = () => {
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
               Welcome Back{' '}
-              {isLoadingProfile ? (
+              {isLoading ? (
                 <Skeleton className="h-8 w-32 inline-block" />
               ) : (
                 <Link 
@@ -86,7 +100,7 @@ const Index = () => {
           </Button>
         </div>
 
-        {isLoading ? (
+        {isLoadingClients ? (
           <div className="flex gap-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="w-full">
