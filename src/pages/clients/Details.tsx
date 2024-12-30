@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Building2, Mail, Phone, MapPin, MessageSquareMore, FolderArchive, Facebook, CreditCard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 const ClientDetails = () => {
   const { id } = useParams();
@@ -29,30 +30,38 @@ const ClientDetails = () => {
     {
       title: "Automated Communication",
       description: "Manage automated emails and messages",
+      tooltip: "Set up automated email campaigns, SMS notifications, and custom communication workflows to keep your client engaged and informed about their projects and services.",
       icon: MessageSquareMore,
       color: "from-blue-500 to-cyan-500",
       comingSoon: false,
+      path: "communication"
     },
     {
       title: "Document Storage",
       description: "Store and manage client documents",
+      tooltip: "Securely store, organize, and share important client documents, contracts, and project files. Keep everything in one place with version control and easy access.",
       icon: FolderArchive,
       color: "from-emerald-500 to-teal-500",
       comingSoon: false,
+      path: "documents"
     },
     {
       title: "Facebook Manager",
       description: "Manage Facebook ads and content",
+      tooltip: "Create and manage Facebook advertising campaigns, track performance metrics, and optimize social media content to boost your client's online presence.",
       icon: Facebook,
       color: "from-blue-600 to-indigo-600",
       comingSoon: true,
+      path: "facebook"
     },
     {
       title: "Stripe Manager",
       description: "Handle payments and subscriptions",
+      tooltip: "Process payments, manage subscriptions, and track financial transactions seamlessly. Generate invoices and maintain payment records all in one place.",
       icon: CreditCard,
       color: "from-purple-500 to-pink-500",
       comingSoon: true,
+      path: "payments"
     },
   ];
 
@@ -161,28 +170,48 @@ const ClientDetails = () => {
         <h2 className="text-xl font-semibold">Client Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {actionBoxes.map((action) => (
-            <Card 
-              key={action.title}
-              className="glass-card relative overflow-hidden group cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-20 transition-opacity duration-300 ease-in-out"></div>
-              <div className="p-6 space-y-4">
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${action.color} text-white`}>
-                  <action.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold">{action.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    {action.description}
+            <HoverCard key={action.title}>
+              <HoverCardTrigger asChild>
+                <Link 
+                  to={action.comingSoon ? "#" : `/dashboard/clients/${id}/${action.path}`}
+                  className={action.comingSoon ? 'cursor-not-allowed' : ''}
+                  onClick={(e) => action.comingSoon && e.preventDefault()}
+                >
+                  <Card className="glass-card relative overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-20 transition-opacity duration-300 ease-in-out"></div>
+                    <div className="p-6 space-y-4">
+                      <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${action.color} text-white`}>
+                        <action.icon className="h-6 w-6" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold">{action.title}</h3>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {action.description}
+                        </p>
+                      </div>
+                      {action.comingSoon && (
+                        <Badge variant="secondary" className="absolute top-4 right-4">
+                          Coming Soon
+                        </Badge>
+                      )}
+                    </div>
+                  </Card>
+                </Link>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-80 glass">
+                <div className="space-y-2">
+                  <h4 className="font-semibold">{action.title}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {action.tooltip}
                   </p>
+                  {!action.comingSoon && (
+                    <p className="text-sm text-primary mt-2">
+                      Click to manage {action.title.toLowerCase()}
+                    </p>
+                  )}
                 </div>
-                {action.comingSoon && (
-                  <Badge variant="secondary" className="absolute top-4 right-4">
-                    Coming Soon
-                  </Badge>
-                )}
-              </div>
-            </Card>
+              </HoverCardContent>
+            </HoverCard>
           ))}
         </div>
       </div>
