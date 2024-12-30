@@ -4,7 +4,7 @@ import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Building2, Mail, Phone, MapPin } from "lucide-react";
+import { ArrowLeft, Building2, Mail, Phone, MapPin, MessageSquareMore, FolderArchive, Facebook, CreditCard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 
@@ -24,6 +24,37 @@ const ClientDetails = () => {
       return data;
     },
   });
+
+  const actionBoxes = [
+    {
+      title: "Automated Communication",
+      description: "Manage automated emails and messages",
+      icon: MessageSquareMore,
+      color: "from-blue-500 to-cyan-500",
+      comingSoon: false,
+    },
+    {
+      title: "Document Storage",
+      description: "Store and manage client documents",
+      icon: FolderArchive,
+      color: "from-emerald-500 to-teal-500",
+      comingSoon: false,
+    },
+    {
+      title: "Facebook Manager",
+      description: "Manage Facebook ads and content",
+      icon: Facebook,
+      color: "from-blue-600 to-indigo-600",
+      comingSoon: true,
+    },
+    {
+      title: "Stripe Manager",
+      description: "Handle payments and subscriptions",
+      icon: CreditCard,
+      color: "from-purple-500 to-pink-500",
+      comingSoon: true,
+    },
+  ];
 
   if (isLoading) {
     return (
@@ -125,6 +156,36 @@ const ClientDetails = () => {
           )}
         </div>
       </Card>
+
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold">Client Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {actionBoxes.map((action) => (
+            <Card 
+              key={action.title}
+              className="glass-card relative overflow-hidden group cursor-pointer"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br opacity-10 group-hover:opacity-20 transition-opacity duration-300 ease-in-out"></div>
+              <div className="p-6 space-y-4">
+                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${action.color} text-white`}>
+                  <action.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">{action.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {action.description}
+                  </p>
+                </div>
+                {action.comingSoon && (
+                  <Badge variant="secondary" className="absolute top-4 right-4">
+                    Coming Soon
+                  </Badge>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
