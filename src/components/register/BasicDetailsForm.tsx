@@ -27,6 +27,11 @@ type Props = {
   onNext: () => void;
 };
 
+const companyPrefixes = ["Tech", "Digital", "Smart", "Future", "Global", "Next", "Innovative", "Modern"];
+const companySuffixes = ["Solutions", "Systems", "Technologies", "Innovations", "Services", "Labs", "Group", "Corp"];
+const firstNames = ["John", "Jane", "Alex", "Sarah", "Michael", "Emma", "David", "Lisa"];
+const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis"];
+
 export const BasicDetailsForm = ({ data, updateData, onNext }: Props) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,16 +43,29 @@ export const BasicDetailsForm = ({ data, updateData, onNext }: Props) => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    updateData(values);
-    onNext();
+  const getRandomElement = (array: string[]) => {
+    return array[Math.floor(Math.random() * array.length)];
+  };
+
+  const generateRandomPhone = () => {
+    return `+1 (${Math.floor(Math.random() * 900) + 100}) ${Math.floor(Math.random() * 900) + 100}-${Math.floor(Math.random() * 9000) + 1000}`;
   };
 
   const fillDemoData = () => {
-    form.setValue("companyName", "Acme Inc.");
-    form.setValue("contactPerson", "John Doe");
-    form.setValue("email", "john@acme.com");
-    form.setValue("phone", "");
+    const firstName = getRandomElement(firstNames);
+    const lastName = getRandomElement(lastNames);
+    const companyName = `${getRandomElement(companyPrefixes)} ${getRandomElement(companySuffixes)}`;
+    const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${companyName.toLowerCase().replace(' ', '')}.com`;
+
+    form.setValue("companyName", companyName);
+    form.setValue("contactPerson", `${firstName} ${lastName}`);
+    form.setValue("email", email);
+    form.setValue("phone", generateRandomPhone());
+  };
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    updateData(values);
+    onNext();
   };
 
   return (
