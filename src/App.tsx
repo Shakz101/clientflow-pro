@@ -17,6 +17,7 @@ import NewClient from "./pages/clients/New";
 import ClientDetails from "./pages/clients/Details";
 import Clients from "./pages/clients/Clients";
 import Settings from "./pages/Settings";
+import Profile from "./pages/Profile";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
                         <Route path="/clients/new" element={<NewClient />} />
                         <Route path="/clients/:id" element={<ClientDetails />} />
                         <Route path="/settings" element={<Settings />} />
+                        <Route path="/profile" element={<Profile />} />
                       </Routes>
                     </div>
                   </div>

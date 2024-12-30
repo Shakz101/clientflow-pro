@@ -28,6 +28,21 @@ const Index = () => {
     },
   });
 
+  const { data: profile, isLoading: isLoadingProfile } = useQuery({
+    queryKey: ['profile'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('company_name')
+        .eq('id', user?.id)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    },
+  });
+
   return (
     <div className="container py-6 animate-fade-in relative">
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
@@ -36,7 +51,17 @@ const Index = () => {
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Welcome Back
+              Welcome Back{' '}
+              {isLoadingProfile ? (
+                <Skeleton className="h-8 w-32 inline-block" />
+              ) : (
+                <Link 
+                  to="/dashboard/profile" 
+                  className="hover:underline decoration-blue-600"
+                >
+                  {profile?.company_name}
+                </Link>
+              )}
             </h1>
             <p className="text-muted-foreground mt-1">
               Manage your clients and campaigns
