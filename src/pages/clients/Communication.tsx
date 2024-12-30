@@ -150,7 +150,7 @@ const Communication = () => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Hello {{ClientName}}, welcome to our service! We're excited to have you...
+                    {"Hello {ClientName}, welcome to our service! We're excited to have you..."}
                   </p>
                 </div>
 
@@ -163,7 +163,7 @@ const Communication = () => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Hi {{ClientName}}, this is a friendly reminder about your upcoming payment...
+                    {"Hi {ClientName}, this is a friendly reminder about your upcoming payment..."}
                   </p>
                 </div>
 
