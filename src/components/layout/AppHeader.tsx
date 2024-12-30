@@ -26,20 +26,20 @@ const mockNotifications = [
 
 export function AppHeader() {
   return (
-    <header className="border-b bg-gradient-to-r from-white/50 via-white/80 to-white/50 backdrop-blur-sm shadow-sm">
+    <header className="border-b">
       <div className="flex h-16 items-center px-4 gap-4">
         <Button variant="ghost" size="icon" className="md:hidden">
           <Menu className="h-6 w-6" />
         </Button>
         <div className="flex-1 flex items-center gap-4 md:gap-8">
-          <h2 className="text-xl font-semibold text-gray-800">Agency Dashboard</h2>
+          <h2 className="text-xl font-semibold">Agency Dashboard</h2>
           <div className="hidden md:flex items-center gap-4 flex-1 max-w-xl">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search clients..."
-                className="pl-8 bg-white/80 backdrop-blur-sm hover:bg-white/90 transition-colors"
+                className="pl-8"
               />
             </div>
           </div>
@@ -51,10 +51,10 @@ export function AppHeader() {
               <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-red-500" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-80 mt-2 bg-white/90 backdrop-blur-sm" align="end">
+          <DropdownMenuContent className="w-80" align="end">
             <DropdownMenuGroup>
               {mockNotifications.map((notification) => (
-                <DropdownMenuItem key={notification.id} className="p-4 hover:bg-white/80">
+                <DropdownMenuItem key={notification.id} className="p-4">
                   <div className="flex flex-col gap-1">
                     <p className="font-medium">{notification.title}</p>
                     <p className="text-sm text-muted-foreground">
