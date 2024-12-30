@@ -24,7 +24,7 @@ const Login = () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: 'demo@example.com',
-        password: 'demo123'
+        password: 'demo123456'
       });
 
       if (error) {

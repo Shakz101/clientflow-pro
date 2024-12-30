@@ -44,8 +44,8 @@ export const PasswordForm = ({ data, updateData, onNext, onBack }: Props) => {
   };
 
   const fillDemoData = () => {
-    form.setValue("password", "12345");
-    form.setValue("confirmPassword", "12345");
+    form.setValue("password", "demo123456");
+    form.setValue("confirmPassword", "demo123456");
   };
 
   return (
