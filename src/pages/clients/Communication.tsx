@@ -18,53 +18,53 @@ const metricsData = [
 
 const Communication = () => {
   return (
-    <div className="p-6 space-y-6 animate-fade-in">
+    <div className="p-6 space-y-6 animate-fade-in bg-background">
       {/* Key Metrics Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="glass-card">
+        <Card className="border bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Send className="h-5 w-5" />
               Total Messages
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">1,234</div>
+            <div className="text-3xl font-bold text-foreground">1,234</div>
             <p className="text-sm text-muted-foreground">+12% from last month</p>
           </CardContent>
         </Card>
 
-        <Card className="glass-card">
+        <Card className="border bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Mail className="h-5 w-5" />
               Open Rate
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">87%</div>
+            <div className="text-3xl font-bold text-foreground">87%</div>
             <p className="text-sm text-muted-foreground">Industry avg: 75%</p>
           </CardContent>
         </Card>
 
-        <Card className="glass-card">
+        <Card className="border bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-foreground">
               <Clock className="h-5 w-5" />
               Scheduled
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold">8</div>
+            <div className="text-3xl font-bold text-foreground">8</div>
             <p className="text-sm text-muted-foreground">Messages pending</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Engagement Chart */}
-      <Card className="glass-card">
+      <Card className="border bg-card/50 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle>Engagement Overview</CardTitle>
+          <CardTitle className="text-foreground">Engagement Overview</CardTitle>
           <CardDescription>Message performance over time</CardDescription>
         </CardHeader>
         <CardContent>
@@ -72,16 +72,22 @@ const Communication = () => {
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={metricsData}>
                 <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
+                <XAxis dataKey="name" stroke="currentColor" />
+                <YAxis stroke="currentColor" />
+                <Tooltip 
+                  contentStyle={{ 
+                    backgroundColor: 'var(--background)',
+                    border: '1px solid var(--border)',
+                    borderRadius: '6px'
+                  }}
+                />
                 <Line 
                   type="monotone" 
                   dataKey="value" 
-                  stroke="currentColor" 
+                  stroke="var(--primary)" 
                   strokeWidth={2}
-                  dot={{ r: 4 }}
-                  activeDot={{ r: 6 }}
+                  dot={{ r: 4, fill: 'var(--primary)' }}
+                  activeDot={{ r: 6, fill: 'var(--primary)' }}
                 />
               </LineChart>
             </ResponsiveContainer>
@@ -91,24 +97,24 @@ const Communication = () => {
 
       {/* Automation and Templates Section */}
       <Tabs defaultValue="automation" className="space-y-4">
-        <TabsList className="glass">
+        <TabsList className="bg-muted text-muted-foreground">
           <TabsTrigger value="automation">Automation</TabsTrigger>
           <TabsTrigger value="templates">Templates</TabsTrigger>
         </TabsList>
 
         <TabsContent value="automation" className="space-y-4">
-          <Card className="glass-card">
+          <Card className="border bg-card/50 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle>Automation Rules</CardTitle>
+              <CardTitle className="text-foreground">Automation Rules</CardTitle>
               <CardDescription>Set up triggers and actions for automated messages</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex justify-between items-center p-4 border rounded-lg hover:bg-accent/50 transition-colors">
                 <div className="space-y-1">
-                  <h4 className="font-medium">Onboarding Welcome</h4>
+                  <h4 className="font-medium text-foreground">Onboarding Welcome</h4>
                   <p className="text-sm text-muted-foreground">Sends after client signup</p>
                 </div>
-                <Button variant="outline" size="sm" className="glass-button">
+                <Button variant="outline" size="sm">
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Button>
@@ -116,16 +122,16 @@ const Communication = () => {
 
               <div className="flex justify-between items-center p-4 border rounded-lg hover:bg-accent/50 transition-colors">
                 <div className="space-y-1">
-                  <h4 className="font-medium">Payment Success</h4>
+                  <h4 className="font-medium text-foreground">Payment Success</h4>
                   <p className="text-sm text-muted-foreground">Confirms successful payments</p>
                 </div>
-                <Button variant="outline" size="sm" className="glass-button">
+                <Button variant="outline" size="sm">
                   <Edit className="h-4 w-4 mr-2" />
                   Edit
                 </Button>
               </div>
 
-              <Button className="w-full glass-button">
+              <Button className="w-full">
                 <Plus className="h-4 w-4 mr-2" />
                 Create New Automation
               </Button>
@@ -134,17 +140,17 @@ const Communication = () => {
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-4">
-          <Card className="glass-card">
+          <Card className="border bg-card/50 backdrop-blur-sm">
             <CardHeader>
-              <CardTitle>Message Templates</CardTitle>
+              <CardTitle className="text-foreground">Message Templates</CardTitle>
               <CardDescription>Pre-made templates for common scenarios</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
                 <div className="p-4 border rounded-lg hover:bg-accent/50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-medium">Welcome Message</h4>
-                    <Button variant="outline" size="sm" className="glass-button">
+                    <h4 className="font-medium text-foreground">Welcome Message</h4>
+                    <Button variant="outline" size="sm">
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </Button>
@@ -156,8 +162,8 @@ const Communication = () => {
 
                 <div className="p-4 border rounded-lg hover:bg-accent/50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-medium">Payment Reminder</h4>
-                    <Button variant="outline" size="sm" className="glass-button">
+                    <h4 className="font-medium text-foreground">Payment Reminder</h4>
+                    <Button variant="outline" size="sm">
                       <Edit className="h-4 w-4 mr-2" />
                       Edit
                     </Button>
@@ -167,7 +173,7 @@ const Communication = () => {
                   </p>
                 </div>
 
-                <Button className="w-full glass-button">
+                <Button className="w-full">
                   <Plus className="h-4 w-4 mr-2" />
                   Create New Template
                 </Button>
