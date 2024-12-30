@@ -23,14 +23,18 @@ const Login = () => {
   const fillDemoData = async () => {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
-        email: 'john@acme.com',
-        password: '123456'
+        email: 'demo@example.com',
+        password: 'demo123'
       });
 
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
-          toast.error("Invalid login credentials", {
-            description: "Please check your email and password and try again.",
+          toast.error("Demo account not found", {
+            description: "Please register a new account first.",
+            action: {
+              label: "Register",
+              onClick: () => navigate("/register")
+            },
             duration: 5000
           });
         } else {
@@ -39,7 +43,6 @@ const Login = () => {
             duration: 5000
           });
         }
-        console.error("Login error details:", error);
         return;
       }
 
@@ -72,19 +75,42 @@ const Login = () => {
               className="glass-button"
               size="sm"
             >
-              <Wand2 className="w-4 h-4" />
+              <Wand2 className="w-4 h-4 mr-2" />
               Fill Demo Data
             </Button>
           </div>
 
           <Auth
             supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
+            appearance={{ 
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#2563eb',
+                    brandAccent: '#1d4ed8'
+                  }
+                }
+              }
+            }}
             providers={[]}
             redirectTo={`${window.location.origin}/dashboard`}
             localization={{
               variables: {
+                sign_in: {
+                  email_label: 'Email address',
+                  password_label: 'Password',
+                  button_label: 'Sign in',
+                  loading_button_label: 'Signing in...',
+                  social_provider_text: 'Sign in with {{provider}}',
+                  link_text: "Already have an account? Sign in",
+                },
                 sign_up: {
+                  email_label: 'Email address',
+                  password_label: 'Create a password',
+                  button_label: 'Sign up',
+                  loading_button_label: 'Signing up...',
+                  social_provider_text: 'Sign up with {{provider}}',
                   link_text: "Don't have an account? Sign up",
                 },
               },
