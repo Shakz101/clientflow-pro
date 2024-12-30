@@ -54,24 +54,14 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
-      const { data, error } = await supabase.auth.signUp({
+      // First, sign up the user
+      const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: registrationData.email,
         password: registrationData.password!,
-        options: {
-          data: {
-            company_name: registrationData.companyName,
-            contact_person: registrationData.contactPerson,
-            phone: registrationData.phone,
-            business_type: registrationData.businessType,
-            other_business_type: registrationData.otherBusinessType,
-            selected_tools: registrationData.selectedTools,
-            other_tools: registrationData.otherTools,
-          }
-        }
       });
 
-      if (error) {
-        if (error.message.includes("already registered") || error.message.includes("already exists")) {
+      if (signUpError) {
+        if (signUpError.message.includes("already registered") || signUpError.message.includes("already exists")) {
           toast.error("This email is already registered.", {
             description: "Please try logging in instead.",
             action: {
@@ -84,10 +74,36 @@ const Register = () => {
         }
         
         toast.error("Registration failed", {
-          description: error.message,
+          description: signUpError.message,
           duration: 5000
         });
         return;
+      }
+
+      // Then, update the profile with all the registration data
+      if (authData.user) {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            company_name: registrationData.companyName,
+            contact_person: registrationData.contactPerson,
+            email: registrationData.email,
+            phone: registrationData.phone,
+            business_type: registrationData.businessType,
+            other_business_type: registrationData.otherBusinessType,
+            selected_tools: registrationData.selectedTools,
+            other_tools: registrationData.otherTools,
+          })
+          .eq('id', authData.user.id);
+
+        if (profileError) {
+          console.error("Error updating profile:", profileError);
+          toast.error("Failed to save profile details", {
+            description: "Your account was created but some details couldn't be saved. You can update them later in your profile.",
+            duration: 5000
+          });
+          return;
+        }
       }
 
       toast.success("Registration successful!", {
