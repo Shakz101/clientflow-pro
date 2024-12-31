@@ -1,18 +1,17 @@
-on: push
-name: 🚀 Deploy website on push
+name: scp files
+on: [push]
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: access1005719582.webspace-data.io
-        username: u116384827
-        password: Shakil1234567890
-        local-dir: ./  # Adjust this to match your repository structure
-        server-dir: /  # Adjust this if your web root is in a subdirectory
+      - uses: actions/checkout@v4
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: access1005719582.webspace-data.io
+          username: u116384827
+          password: ${{ secrets.ftp_password }}
+          port: 22
+          source: "./"  # Adjust this to the directory/files to upload
+          target: "/htdocs/"  # Replace with the correct web root folder
