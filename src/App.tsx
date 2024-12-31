@@ -17,6 +17,7 @@ import Login from "./pages/Login";
 import NewClient from "./pages/clients/New";
 import ClientDetails from "./pages/clients/Details";
 import Clients from "./pages/clients/Clients";
+import Communication from "./pages/clients/Communication";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 
@@ -79,6 +80,7 @@ const App = () => (
                           <Route path="/clients" element={<Clients />} />
                           <Route path="/clients/new" element={<NewClient />} />
                           <Route path="/clients/:id" element={<ClientDetails />} />
+                          <Route path="/clients/:id/communication" element={<Communication />} />
                           <Route path="/settings" element={<Settings />} />
                           <Route path="/profile" element={<Profile />} />
                         </Routes>
