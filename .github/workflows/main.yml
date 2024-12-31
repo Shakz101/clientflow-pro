@@ -13,6 +13,6 @@ jobs:
       with:
         server: access1005719582.webspace-data.io
         username: u116384827
-        password: ${{ secrets.ftp_password }}
+        password: Shakil1234567890
         local-dir: ./  # Adjust this to match your repository structure
         server-dir: /  # Adjust this if your web root is in a subdirectory
