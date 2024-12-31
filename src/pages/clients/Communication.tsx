@@ -18,10 +18,10 @@ const metricsData = [
 
 const Communication = () => {
   return (
-    <div className="p-6 space-y-6 animate-fade-in bg-background">
+    <div className="p-6 space-y-6 min-h-screen bg-background">
       {/* Key Metrics Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="border bg-card/50 backdrop-blur-sm">
+        <Card className="bg-card shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Send className="h-5 w-5" />
@@ -34,7 +34,7 @@ const Communication = () => {
           </CardContent>
         </Card>
 
-        <Card className="border bg-card/50 backdrop-blur-sm">
+        <Card className="bg-card shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Mail className="h-5 w-5" />
@@ -47,7 +47,7 @@ const Communication = () => {
           </CardContent>
         </Card>
 
-        <Card className="border bg-card/50 backdrop-blur-sm">
+        <Card className="bg-card shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-foreground">
               <Clock className="h-5 w-5" />
@@ -62,23 +62,24 @@ const Communication = () => {
       </div>
 
       {/* Engagement Chart */}
-      <Card className="border bg-card/50 backdrop-blur-sm">
+      <Card className="bg-card shadow-lg">
         <CardHeader>
           <CardTitle className="text-foreground">Engagement Overview</CardTitle>
-          <CardDescription>Message performance over time</CardDescription>
+          <CardDescription className="text-muted-foreground">Message performance over time</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="h-[300px]">
+          <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={metricsData}>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis dataKey="name" stroke="currentColor" />
-                <YAxis stroke="currentColor" />
+                <CartesianGrid strokeDasharray="3 3" className="stroke-muted/20" />
+                <XAxis dataKey="name" className="text-muted-foreground" />
+                <YAxis className="text-muted-foreground" />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: 'var(--background)',
                     border: '1px solid var(--border)',
-                    borderRadius: '6px'
+                    borderRadius: '6px',
+                    color: 'var(--foreground)'
                   }}
                 />
                 <Line 
@@ -97,19 +98,19 @@ const Communication = () => {
 
       {/* Automation and Templates Section */}
       <Tabs defaultValue="automation" className="space-y-4">
-        <TabsList className="bg-muted text-muted-foreground">
-          <TabsTrigger value="automation">Automation</TabsTrigger>
-          <TabsTrigger value="templates">Templates</TabsTrigger>
+        <TabsList className="bg-muted">
+          <TabsTrigger value="automation" className="text-foreground">Automation</TabsTrigger>
+          <TabsTrigger value="templates" className="text-foreground">Templates</TabsTrigger>
         </TabsList>
 
         <TabsContent value="automation" className="space-y-4">
-          <Card className="border bg-card/50 backdrop-blur-sm">
+          <Card className="bg-card shadow-lg">
             <CardHeader>
               <CardTitle className="text-foreground">Automation Rules</CardTitle>
-              <CardDescription>Set up triggers and actions for automated messages</CardDescription>
+              <CardDescription className="text-muted-foreground">Set up triggers and actions for automated messages</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="flex justify-between items-center p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+              <div className="flex justify-between items-center p-4 border rounded-lg bg-background/50 hover:bg-accent/50 transition-colors">
                 <div className="space-y-1">
                   <h4 className="font-medium text-foreground">Onboarding Welcome</h4>
                   <p className="text-sm text-muted-foreground">Sends after client signup</p>
@@ -120,7 +121,7 @@ const Communication = () => {
                 </Button>
               </div>
 
-              <div className="flex justify-between items-center p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+              <div className="flex justify-between items-center p-4 border rounded-lg bg-background/50 hover:bg-accent/50 transition-colors">
                 <div className="space-y-1">
                   <h4 className="font-medium text-foreground">Payment Success</h4>
                   <p className="text-sm text-muted-foreground">Confirms successful payments</p>
@@ -140,14 +141,14 @@ const Communication = () => {
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-4">
-          <Card className="border bg-card/50 backdrop-blur-sm">
+          <Card className="bg-card shadow-lg">
             <CardHeader>
               <CardTitle className="text-foreground">Message Templates</CardTitle>
-              <CardDescription>Pre-made templates for common scenarios</CardDescription>
+              <CardDescription className="text-muted-foreground">Pre-made templates for common scenarios</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-4">
-                <div className="p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                <div className="p-4 border rounded-lg bg-background/50 hover:bg-accent/50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-medium text-foreground">Welcome Message</h4>
                     <Button variant="outline" size="sm">
@@ -156,11 +157,11 @@ const Communication = () => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {"Hello {ClientName}, welcome to our service! We're excited to have you..."}
+                    "Hello {'{ClientName}'}, welcome to our service! We're excited to have you..."
                   </p>
                 </div>
 
-                <div className="p-4 border rounded-lg hover:bg-accent/50 transition-colors">
+                <div className="p-4 border rounded-lg bg-background/50 hover:bg-accent/50 transition-colors">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-medium text-foreground">Payment Reminder</h4>
                     <Button variant="outline" size="sm">
@@ -169,7 +170,7 @@ const Communication = () => {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {"Hi {ClientName}, this is a friendly reminder about your upcoming payment..."}
+                    "Hi {'{ClientName}'}, this is a friendly reminder about your upcoming payment..."
                   </p>
                 </div>
 
