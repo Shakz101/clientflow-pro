@@ -1,0 +1,23 @@
+name: Deploy to IONOS
+
+on:
+  push:
+    branches:
+      - main  # Change this to your branch name if different.
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Deploy to IONOS via FTP
+      uses: SamKirkland/FTP-Deploy-Action@4.5.0
+      with:
+        server: ftp://access1005719582.webspace-data.io
+        username: u116384827  # Explicit FTP username
+        password: Shakil1234567890  # Password stored as a secret
+        local-dir: ./  # Adjust this to match your repository structure
+        server-dir: /  # Adjust this if your web root is in a subdirectory
