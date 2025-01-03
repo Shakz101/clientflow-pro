@@ -1,9 +1,10 @@
+import { Toaster } from "@/components/ui/toaster";
 import { Button } from "@/components/ui/button";
 import { ClientCard } from "@/components/clients/ClientCard";
 import { Link } from "react-router-dom";
 import { PlusCircle, CircleDot } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Carousel,

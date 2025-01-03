@@ -5,7 +5,7 @@ import { PlatformIntegrationForm } from "@/components/clients/PlatformIntegratio
 import { ClientNotesForm } from "@/components/clients/ClientNotesForm";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
