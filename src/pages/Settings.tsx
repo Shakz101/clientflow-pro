@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase"; // Changed to use the single instance from lib
 import { useToast } from "@/components/ui/use-toast";
 import { themes } from "@/lib/themes";
 import { useTheme } from "@/components/ui/theme-provider";
@@ -16,8 +15,17 @@ const Settings = () => {
 
   const handleLogout = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // First check if we have a session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        // If no session, just redirect to login
+        navigate("/login");
+        return;
+      }
+
+      // Proceed with logout
+      await supabase.auth.signOut();
       
       toast({
         title: "Logged out successfully",
@@ -25,8 +33,15 @@ const Settings = () => {
       });
       
       navigate("/");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error logging out:", error);
+      
+      // Handle the specific session not found error
+      if (error.message?.includes("session_not_found")) {
+        navigate("/login");
+        return;
+      }
+
       toast({
         variant: "destructive",
         title: "Error logging out",
