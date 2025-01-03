@@ -22,6 +22,9 @@ const handler = async (req: Request): Promise<Response> => {
   try {
     const contactRequest: ContactRequest = await req.json();
     
+    // For testing, send to the verified email
+    const testEmail = "shakkil39@gmail.com"; // This should be replaced with admin@devircle.com after domain verification
+    
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -30,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "Contact Form <onboarding@resend.dev>",
-        to: ["admin@devircle.com"],
+        to: [testEmail],
         subject: `New Contact Form Submission from ${contactRequest.name}`,
         html: `
           <h2>New Contact Form Submission</h2>
@@ -51,12 +54,14 @@ const handler = async (req: Request): Promise<Response> => {
       });
     } else {
       const error = await res.text();
+      console.error("Resend API error:", error);
       return new Response(JSON.stringify({ error }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
   } catch (error: any) {
+    console.error("Error in send-contact-email function:", error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
