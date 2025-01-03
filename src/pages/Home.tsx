@@ -11,6 +11,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
+  TooltipTrigger,
 } from "@/components/ui/tooltip";
 
 export default function Home() {
@@ -85,7 +86,11 @@ export default function Home() {
       
       <TooltipProvider>
         <Tooltip open={showContactPrompt} onOpenChange={setShowContactPrompt}>
-          <ContactForm />
+          <TooltipTrigger asChild>
+            <div>
+              <ContactForm />
+            </div>
+          </TooltipTrigger>
           <TooltipContent 
             side="top" 
             className="bg-primary text-primary-foreground p-4 max-w-[200px] text-center"
