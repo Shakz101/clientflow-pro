@@ -7,7 +7,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { AppHeader } from "@/components/layout/AppHeader";
 import { AppSidebar } from "@/components/layout/AppSidebar";
-import { AdminLabel } from "@/components/layout/AdminLabel";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { User } from "@supabase/supabase-js";
@@ -87,7 +86,6 @@ const App = () => (
                           <Route path="/profile" element={<Profile />} />
                           <Route path="*" element={<NotFound />} />
                         </Routes>
-                        <AdminLabel />
                       </div>
                     </div>
                   </SidebarProvider>
