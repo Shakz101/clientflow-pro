@@ -59,11 +59,11 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-[#9b87f5] text-white py-4 animate-fade-in">
+      <header className="bg-primary text-primary-foreground py-4 animate-fade-in">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold">Devircle</h1>
-            <Button asChild variant="outline" className="text-white border-white hover:bg-white/20">
+            <Button asChild variant="outline" className="border-primary-foreground hover:bg-primary-foreground/20">
               <Link to="/login">Get Started</Link>
             </Button>
           </div>
