@@ -20,7 +20,7 @@ const userScenarios = [
     description: "Sarah manages social media campaigns for 15 different TikTok creators. She was struggling to keep track of content calendars and campaign assets across multiple clients. With our platform, she now has a central hub where she can organize all client information and track deliverables effortlessly.",
     role: "Marketing Manager",
     focus: "TikTok Campaigns",
-    avatar: "/cartoon-marketer.svg",
+    avatar: "/lovable-uploads/369e361b-5139-4703-9ded-367f361429f1.png",
   },
   {
     title: "Meet Alex, the Web Developer",
