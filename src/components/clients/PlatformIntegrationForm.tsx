@@ -19,6 +19,7 @@ const platforms = [
   { id: "facebook", label: "Facebook" },
   { id: "google-ads", label: "Google Ads" },
   { id: "hubspot", label: "HubSpot" },
+  { id: "tiktok", label: "TikTok" },
 ];
 
 const formSchema = z.object({
