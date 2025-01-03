@@ -58,7 +58,7 @@ const Index = () => {
   return (
     <div className="container py-6 animate-fade-in relative">
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-b z-50">
+      <div className="fixed top-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-b z-50">
         <div className="container py-4">
           <div className="flex items-center gap-2">
             <CircleDot className="h-8 w-8 text-primary" />
@@ -69,7 +69,7 @@ const Index = () => {
 
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
       
-      <div className="glass rounded-2xl p-8 mb-8 relative mt-16">
+      <div className="glass rounded-2xl p-8 mb-8 relative mt-20">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
