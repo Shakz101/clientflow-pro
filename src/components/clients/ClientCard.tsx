@@ -16,20 +16,15 @@ interface ClientCardProps {
   client: {
     id: string;
     name: string;
-    company: string;
-    status: "active" | "pending" | "inactive";
     email: string;
+    tools?: string[] | null;
+    created_at: string;
+    created_by: string;
   };
 }
 
 export function ClientCard({ client }: ClientCardProps) {
   const { toast } = useToast();
-  
-  const statusColors = {
-    active: "bg-green-100 text-green-800",
-    pending: "bg-yellow-100 text-yellow-800",
-    inactive: "bg-gray-100 text-gray-800",
-  };
 
   const handleDeleteClient = () => {
     toast({
@@ -48,7 +43,9 @@ export function ClientCard({ client }: ClientCardProps) {
           >
             {client.name}
           </Link>
-          <p className="text-sm text-muted-foreground">{client.company}</p>
+          <p className="text-sm text-muted-foreground">
+            {client.tools?.length ? client.tools.join(", ") : "No tools integrated"}
+          </p>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -82,11 +79,8 @@ export function ClientCard({ client }: ClientCardProps) {
         </DropdownMenu>
       </div>
       <div className="mt-4 flex items-center justify-between">
-        <Badge
-          variant="secondary"
-          className={`${statusColors[client.status]} capitalize`}
-        >
-          {client.status}
+        <Badge variant="secondary" className="bg-blue-100 text-blue-800">
+          {new Date(client.created_at).toLocaleDateString()}
         </Badge>
         <span className="text-sm text-muted-foreground">{client.email}</span>
       </div>
