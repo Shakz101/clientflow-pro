@@ -7,7 +7,7 @@ import { PasswordForm } from "@/components/register/PasswordForm";
 import { ToolsIntegrationsForm } from "@/components/register/ToolsIntegrationsForm";
 import { ReviewConfirmation } from "@/components/register/ReviewConfirmation";
 import { Progress } from "@/components/ui/progress";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
