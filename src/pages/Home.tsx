@@ -58,6 +58,18 @@ const testimonials = [
 export default function Home() {
   return (
     <div className="min-h-screen">
+      {/* Header */}
+      <header className="bg-[#9b87f5] text-white py-4 animate-fade-in">
+        <div className="container mx-auto px-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold">Devircle</h1>
+            <Button asChild variant="outline" className="text-white border-white hover:bg-white/20">
+              <Link to="/login">Get Started</Link>
+            </Button>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 overflow-hidden">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
