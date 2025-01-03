@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import { ArrowRight, Users, Zap, LogIn, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const features = [
   {
@@ -56,10 +57,33 @@ const testimonials = [
 ];
 
 export default function Home() {
+  useEffect(() => {
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-fade-in", "opacity-100");
+          entry.target.classList.remove("opacity-0", "translate-y-10");
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, {
+      threshold: 0.1,
+      rootMargin: "50px",
+    });
+
+    document.querySelectorAll(".scroll-animation").forEach((element) => {
+      element.classList.add("opacity-0", "translate-y-10", "transition-all", "duration-700");
+      observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="fixed w-full z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center space-x-2">
@@ -82,19 +106,19 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 overflow-hidden">
+      <section className="relative pt-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 overflow-hidden min-h-screen flex items-center">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
-        <div className="glass rounded-2xl max-w-7xl mx-auto p-8 relative z-10">
+        <div className="glass rounded-2xl max-w-7xl mx-auto p-8 relative z-10 scroll-animation">
           <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-8 animate-fade-in">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-8">
               Streamline Your Client Onboarding
               <span className="text-primary block mt-2">With Ease</span>
             </h1>
-            <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-10 animate-fade-in [animation-delay:200ms]">
+            <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-10">
               The all-in-one platform for agencies to automate client onboarding,
               manage relationships, and scale operations efficiently.
             </p>
-            <div className="flex justify-center gap-4 animate-fade-in [animation-delay:400ms]">
+            <div className="flex justify-center gap-4">
               <Button asChild size="lg" className="text-lg px-8 glass-button">
                 <Link to="/register">Get Started</Link>
               </Button>
@@ -110,14 +134,18 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">
+          <h2 className="text-3xl font-bold text-center mb-12 scroll-animation">
             Everything You Need to Scale Your Agency
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature) => (
-              <Card key={feature.title} className="glass-card border-none">
+            {features.map((feature, index) => (
+              <Card 
+                key={feature.title} 
+                className="glass-card border-none scroll-animation"
+                style={{ transitionDelay: `${index * 200}ms` }}
+              >
                 <CardHeader>
                   <feature.icon className="h-12 w-12 text-primary mb-4" />
                   <CardTitle>{feature.title}</CardTitle>
@@ -134,8 +162,8 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/5 via-secondary/5 to-accent/5">
+        <div className="max-w-7xl mx-auto scroll-animation">
           <h2 className="text-3xl font-bold text-center mb-12">
             What Our Clients Say
           </h2>
@@ -170,8 +198,8 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
+      <section className="py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto text-center scroll-animation">
           <div className="glass rounded-2xl p-12">
             <h2 className="text-3xl font-bold mb-6">
               Ready to Transform Your Agency?
