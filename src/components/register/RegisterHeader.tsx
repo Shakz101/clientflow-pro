@@ -22,8 +22,8 @@ export const RegisterHeader = ({ step }: { step: number }) => {
 
   return (
     <header className="relative w-full py-6 px-8 border-b border-white/20">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-      <div className="relative max-w-7xl mx-auto flex items-center justify-between">
+      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm -z-10" />
+      <div className="relative z-10 max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-8">
           <AlertDialog>
             <AlertDialogTrigger asChild>
