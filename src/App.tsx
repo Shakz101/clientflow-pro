@@ -20,6 +20,7 @@ import Clients from "./pages/clients/Clients";
 import Communication from "./pages/clients/Communication";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
@@ -83,6 +84,7 @@ const App = () => (
                           <Route path="/clients/:id/communication" element={<Communication />} />
                           <Route path="/settings" element={<Settings />} />
                           <Route path="/profile" element={<Profile />} />
+                          <Route path="*" element={<NotFound />} />
                         </Routes>
                       </div>
                     </div>
@@ -90,6 +92,7 @@ const App = () => (
                 </ProtectedRoute>
               }
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
