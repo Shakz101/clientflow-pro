@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { RegisterHeader } from "@/components/register/RegisterHeader";
 import { BasicDetailsForm } from "@/components/register/BasicDetailsForm";
 import { BusinessTypeForm } from "@/components/register/BusinessTypeForm";
 import { PasswordForm } from "@/components/register/PasswordForm";
 import { ToolsIntegrationsForm } from "@/components/register/ToolsIntegrationsForm";
 import { ReviewConfirmation } from "@/components/register/ReviewConfirmation";
-import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/lib/supabase";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -54,7 +54,6 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
-      // First, sign up the user
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: registrationData.email,
         password: registrationData.password!,
@@ -80,7 +79,6 @@ const Register = () => {
         return;
       }
 
-      // Then, update the profile with all the registration data
       if (authData.user) {
         const { error: profileError } = await supabase
           .from('profiles')
@@ -128,16 +126,7 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex flex-col animate-fade-in">
-      <header className="w-full py-6 px-8 glass border-b border-white/20">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-            Create Your Account
-          </h1>
-          <div className="text-sm text-muted-foreground">
-            Step {step} of 5
-          </div>
-        </div>
-      </header>
+      <RegisterHeader step={step} />
 
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
