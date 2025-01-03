@@ -36,7 +36,7 @@ export const RotatingText = () => {
         after:content-['']
         after:absolute
         after:inset-0
-        after:bg-primary
+        after:bg-white
         after:opacity-0
         ${isFlashing ? 'after:animate-flash' : ''}
       `}
