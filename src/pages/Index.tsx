@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ClientCard } from "@/components/clients/ClientCard";
 import { Link } from "react-router-dom";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, CircleDot } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -56,9 +56,19 @@ const Index = () => {
 
   return (
     <div className="container py-6 animate-fade-in relative">
+      {/* Header */}
+      <div className="absolute top-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-b z-50">
+        <div className="container py-4">
+          <div className="flex items-center gap-2 text-2xl font-bold text-primary">
+            <CircleDot className="h-8 w-8" />
+            <span>Devircle</span>
+          </div>
+        </div>
+      </div>
+
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
       
-      <div className="glass rounded-2xl p-8 mb-8 relative">
+      <div className="glass rounded-2xl p-8 mb-8 relative mt-16">
         <div className="flex justify-between items-center">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
