@@ -19,21 +19,24 @@ import { useRef } from "react";
 const userScenarios = [
   {
     title: "Meet Raj, the TikTok Marketing Agency Business Owner",
-    description: "Raj manages a thriving TikTok marketing agency with clients across multiple industries. He needed a robust system to handle his growing client base, track campaign performance, and streamline communication. Our platform helped him scale his agency by providing a centralized hub for client management and campaign tracking.",
+    description:
+      "Raj manages a thriving TikTok marketing agency with clients across multiple industries. He needed a robust system to handle his growing client base, track campaign performance, and streamline communication. Our platform helped him scale his agency by providing a centralized hub for client management and campaign tracking.",
     role: "Agency Owner",
     focus: "TikTok Marketing",
     avatar: "/lovable-uploads/7589de35-4f47-4e65-ab91-cbe0656ecfe8.png",
   },
   {
     title: "Meet Alex, the Web Developer",
-    description: "Alex runs a growing web development studio. He found himself drowning in client requests, design files, and project timelines spread across different tools. Our platform helped him create a streamlined workflow where he can manage all client projects from a single dashboard.",
+    description:
+      "Alex runs a growing web development studio. He found himself drowning in client requests, design files, and project timelines spread across different tools. Our platform helped him create a streamlined workflow where he can manage all client projects from a single dashboard.",
     role: "Development Lead",
     focus: "Website Projects",
     avatar: "/cartoon-developer.svg",
   },
   {
     title: "Meet Lisa, the Digital Consultant",
-    description: "Lisa provides marketing strategy for multiple businesses. She was spending more time on administrative tasks than actual consulting. Using our platform, she automated her client management workflow and reduced admin time by 40%, giving her more time for strategic planning.",
+    description:
+      "Lisa provides marketing strategy for multiple businesses. She was spending more time on administrative tasks than actual consulting. Using our platform, she automated her client management workflow and reduced admin time by 40%, giving her more time for strategic planning.",
     role: "Strategy Consultant",
     focus: "Digital Marketing",
     avatar: "/cartoon-consultant.svg",
@@ -42,7 +45,10 @@ const userScenarios = [
 
 export function FeaturesSection() {
   const autoplayRef = useRef(
-    Autoplay({ delay: 10000, stopOnInteraction: true })
+    Autoplay({
+      delay: 10000,
+      stopOnInteraction: true,
+    })
   );
 
   return (
