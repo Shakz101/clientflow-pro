@@ -21,7 +21,7 @@ import Communication from "./pages/clients/Communication";
 import Documents from "./pages/clients/Documents";
 import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
-import NotFound from "./pages/NotFound";
+import NotFound from "./pages/404.html";
 
 const queryClient = new QueryClient();
 
