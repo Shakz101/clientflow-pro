@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, MessageSquareMore, FolderArchive, Facebook, CreditCard } from "lucide-react";
+import { ArrowLeft, MessageSquareMore, FolderArchive, Facebook, CreditCard, Video } from "lucide-react";
 import { ClientInfoCard } from "@/components/clients/ClientInfoCard";
 import { ClientActionBox } from "@/components/clients/ClientActionBox";
 
@@ -42,6 +42,15 @@ const ClientDetails = () => {
       color: "from-emerald-500 to-teal-500",
       comingSoon: false,
       path: "documents"
+    },
+    {
+      title: "TikTok Manager",
+      description: "Manage TikTok content and analytics",
+      tooltip: "Create and schedule TikTok content, track performance metrics, and manage your client's TikTok presence all in one place.",
+      icon: Video,
+      color: "from-pink-500 to-rose-500",
+      comingSoon: true,
+      path: "tiktok"
     },
     {
       title: "Facebook Manager",
