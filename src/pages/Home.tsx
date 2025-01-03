@@ -16,6 +16,7 @@ import {
 import { ArrowRight, Users, Zap, LogIn, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import { RotatingText } from "@/components/home/RotatingText";
 
 const features = [
   {
@@ -111,7 +112,8 @@ export default function Home() {
         <div className="glass rounded-2xl max-w-7xl mx-auto p-8 relative z-10 scroll-animation">
           <div className="text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 mb-8">
-              Streamline Your Client Onboarding
+              Streamline Your
+              <RotatingText />
               <span className="text-primary block mt-2">With Ease</span>
             </h1>
             <p className="max-w-2xl mx-auto text-xl text-gray-600 mb-10">
