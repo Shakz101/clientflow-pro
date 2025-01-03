@@ -16,25 +16,25 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 const userScenarios = [
   {
-    title: "For TikTok Marketing Agencies",
-    description: "Perfect for agencies managing multiple TikTok campaigns. They can organize client information, track project progress, and store campaign assets in one place. Ideal for agencies looking to scale their client base without losing track of deliverables.",
-    role: "Marketing Agency",
-    focus: "Social Media Marketing",
-    avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=400&h=400&fit=crop",
+    title: "Meet Sarah, the TikTok Marketing Manager",
+    description: "Sarah manages social media campaigns for 15 different TikTok creators. She was struggling to keep track of content calendars and campaign assets across multiple clients. With our platform, she now has a central hub where she can organize all client information and track deliverables effortlessly.",
+    role: "Marketing Manager",
+    focus: "TikTok Campaigns",
+    avatar: "/cartoon-marketer.svg",
   },
   {
-    title: "For Web Development Studios",
-    description: "Designed for web development teams juggling multiple projects. They can track client requirements, store design assets, and maintain clear communication channels. Perfect for studios scaling from 5 to 15+ clients while maintaining quality.",
-    role: "Development Studio",
-    focus: "Website Development",
-    avatar: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=400&fit=crop",
+    title: "Meet Alex, the Web Developer",
+    description: "Alex runs a growing web development studio. He found himself drowning in client requests, design files, and project timelines spread across different tools. Our platform helped him create a streamlined workflow where he can manage all client projects from a single dashboard.",
+    role: "Development Lead",
+    focus: "Website Projects",
+    avatar: "/cartoon-developer.svg",
   },
   {
-    title: "For Digital Marketing Consultants",
-    description: "Built for consultants managing diverse client portfolios. They can streamline workflows from onboarding to campaign metrics tracking, reducing admin time by 40% to focus more on strategy and growth.",
-    role: "Marketing Consultant",
-    focus: "Performance Marketing",
-    avatar: "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b?w=400&h=400&fit=crop",
+    title: "Meet Lisa, the Digital Consultant",
+    description: "Lisa provides marketing strategy for multiple businesses. She was spending more time on administrative tasks than actual consulting. Using our platform, she automated her client management workflow and reduced admin time by 40%, giving her more time for strategic planning.",
+    role: "Strategy Consultant",
+    focus: "Digital Marketing",
+    avatar: "/cartoon-consultant.svg",
   },
 ];
 
@@ -43,7 +43,7 @@ export function FeaturesSection() {
     <section className="py-32 px-4 sm:px-6 lg:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-12 scroll-animation">
-          Everything You Need to Scale Your Agency
+          Real Solutions for Real Challenges
         </h2>
         <div className="mt-8">
           <Carousel
@@ -59,7 +59,7 @@ export function FeaturesSection() {
                   <Card className="glass-card border-none scroll-animation h-full">
                     <CardHeader>
                       <div className="flex items-center gap-6 mb-4">
-                        <Avatar className="h-20 w-20">
+                        <Avatar className="h-24 w-24 rounded-xl">
                           <AvatarImage
                             src={scenario.avatar}
                             alt={scenario.role}
@@ -67,7 +67,9 @@ export function FeaturesSection() {
                           />
                         </Avatar>
                         <div>
-                          <CardTitle className="text-2xl">{scenario.title}</CardTitle>
+                          <CardTitle className="text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                            {scenario.title}
+                          </CardTitle>
                           <div className="flex gap-2 text-sm text-muted-foreground mt-1">
                             <span>{scenario.role}</span>
                             <span>•</span>
