@@ -60,9 +60,9 @@ const Index = () => {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 bg-background/80 backdrop-blur-sm border-b z-50">
         <div className="container py-4">
-          <div className="flex items-center gap-2 text-2xl font-bold text-primary">
-            <CircleDot className="h-8 w-8" />
-            <span>Devircle</span>
+          <div className="flex items-center gap-2">
+            <CircleDot className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold text-primary">Devircle</span>
           </div>
         </div>
       </div>
