@@ -58,22 +58,31 @@ export function FeaturesSection() {
                 <CarouselItem key={index} className="md:basis-1/1 lg:basis-1/1">
                   <Card className="glass-card border-none scroll-animation h-full">
                     <CardHeader>
-                      <div className="flex items-center gap-6 mb-4">
-                        <Avatar className="h-24 w-24 rounded-xl">
-                          <AvatarImage
+                      <div className="relative">
+                        <div className="absolute inset-0 opacity-10">
+                          <img
                             src={scenario.avatar}
-                            alt={scenario.role}
-                            className="object-cover"
+                            alt=""
+                            className="w-full h-full object-cover"
                           />
-                        </Avatar>
-                        <div>
-                          <CardTitle className="text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                            {scenario.title}
-                          </CardTitle>
-                          <div className="flex gap-2 text-sm text-muted-foreground mt-1">
-                            <span>{scenario.role}</span>
-                            <span>•</span>
-                            <span>{scenario.focus}</span>
+                        </div>
+                        <div className="relative z-10 flex items-center gap-6 mb-4">
+                          <Avatar className="h-24 w-24 rounded-xl">
+                            <AvatarImage
+                              src={scenario.avatar}
+                              alt={scenario.role}
+                              className="object-cover"
+                            />
+                          </Avatar>
+                          <div>
+                            <CardTitle className="text-2xl bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                              {scenario.title}
+                            </CardTitle>
+                            <div className="flex gap-2 text-sm text-muted-foreground mt-1">
+                              <span>{scenario.role}</span>
+                              <span>•</span>
+                              <span>{scenario.focus}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
