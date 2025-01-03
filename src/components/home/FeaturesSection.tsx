@@ -52,19 +52,19 @@ export function FeaturesSection() {
   );
 
   return (
-    <section className="py-40 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center bg-gradient-to-br from-background via-accent/5 to-primary/5">
-      <div className="max-w-[100rem] mx-auto w-full">
-        <h2 className="text-5xl md:text-7xl font-bold text-center mb-24 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in">
+    <section className="py-24 px-4 sm:px-6 lg:px-8 min-h-[80vh] flex items-center bg-gradient-to-br from-background via-accent/5 to-primary/5">
+      <div className="max-w-[90rem] mx-auto w-full">
+        <h2 className="text-4xl md:text-6xl font-bold text-center mb-16 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent animate-fade-in">
           Real Solutions for Real Challenges
         </h2>
-        <div className="mt-12">
+        <div className="mt-8">
           <Carousel
             opts={{
               align: "start",
               loop: true,
             }}
             plugins={[autoplayRef.current]}
-            className="w-full max-w-[90rem] mx-auto"
+            className="w-full max-w-[80rem] mx-auto"
           >
             <CarouselContent>
               {userScenarios.map((scenario, index) => (
@@ -80,8 +80,8 @@ export function FeaturesSection() {
                             className="w-full h-full object-cover mix-blend-overlay opacity-50"
                           />
                         </div>
-                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-12 p-12">
-                          <Avatar className="h-60 w-60 rounded-3xl shadow-2xl ring-8 ring-primary/20 transform transition-all duration-1000 group-hover:scale-110 group-hover:rotate-6">
+                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 p-8">
+                          <Avatar className="h-40 w-40 rounded-3xl shadow-2xl ring-8 ring-primary/20 transform transition-all duration-1000 group-hover:scale-110 group-hover:rotate-6">
                             <AvatarImage
                               src={scenario.avatar}
                               alt={scenario.role}
@@ -89,14 +89,14 @@ export function FeaturesSection() {
                             />
                           </Avatar>
                           <div className="text-center md:text-left">
-                            <CardTitle className="text-5xl md:text-6xl xl:text-7xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-8 leading-tight [transition:_background-position_4s_ease-in-out] bg-[size:200%] hover:bg-[position:100%]">
+                            <CardTitle className="text-4xl md:text-5xl xl:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent mb-6 leading-tight [transition:_background-position_4s_ease-in-out] bg-[size:200%] hover:bg-[position:100%]">
                               {scenario.title}
                             </CardTitle>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-2xl mt-4">
-                              <span className="px-6 py-2 rounded-full bg-primary/10 text-primary font-semibold backdrop-blur-md transform transition-all duration-1000 hover:scale-105 hover:bg-primary/20">
+                            <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xl mt-4">
+                              <span className="px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold backdrop-blur-md transform transition-all duration-1000 hover:scale-105 hover:bg-primary/20">
                                 {scenario.role}
                               </span>
-                              <span className="px-6 py-2 rounded-full bg-secondary/10 text-secondary font-semibold backdrop-blur-md transform transition-all duration-1000 hover:scale-105 hover:bg-secondary/20">
+                              <span className="px-4 py-2 rounded-full bg-secondary/10 text-secondary font-semibold backdrop-blur-md transform transition-all duration-1000 hover:scale-105 hover:bg-secondary/20">
                                 {scenario.focus}
                               </span>
                             </div>
@@ -104,8 +104,8 @@ export function FeaturesSection() {
                         </div>
                       </div>
                     </CardHeader>
-                    <CardContent className="px-12 py-16">
-                      <CardDescription className="text-3xl leading-relaxed text-foreground/80 font-medium">
+                    <CardContent className="px-8 py-12">
+                      <CardDescription className="text-2xl leading-relaxed text-foreground/80 font-medium">
                         {scenario.description}
                       </CardDescription>
                     </CardContent>
@@ -113,9 +113,9 @@ export function FeaturesSection() {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex items-center justify-center gap-12 mt-16">
-              <CarouselPrevious className="relative h-16 w-16 hover:scale-110 transition-transform duration-1000 bg-primary/10 hover:bg-primary/20 border-primary/20" />
-              <CarouselNext className="relative h-16 w-16 hover:scale-110 transition-transform duration-1000 bg-primary/10 hover:bg-primary/20 border-primary/20" />
+            <div className="flex items-center justify-center gap-8 mt-12">
+              <CarouselPrevious className="relative h-12 w-12 hover:scale-110 transition-transform duration-1000 bg-primary/10 hover:bg-primary/20 border-primary/20" />
+              <CarouselNext className="relative h-12 w-12 hover:scale-110 transition-transform duration-1000 bg-primary/10 hover:bg-primary/20 border-primary/20" />
             </div>
           </Carousel>
         </div>
