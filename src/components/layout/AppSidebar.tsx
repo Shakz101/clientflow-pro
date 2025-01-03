@@ -20,6 +20,13 @@ const menuItems = [
 export function AppSidebar() {
   const location = useLocation();
 
+  const isActive = (path: string) => {
+    if (path === "/dashboard") {
+      return location.pathname === "/dashboard";
+    }
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -31,7 +38,7 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={location.pathname.startsWith(item.path)}
+                    isActive={isActive(item.path)}
                   >
                     <Link to={item.path}>
                       <item.icon className="h-4 w-4" />
