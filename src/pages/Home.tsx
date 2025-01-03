@@ -1,14 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { LogIn, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ContactForm } from "@/components/home/ContactForm";
 import { HeroSection } from "@/components/home/HeroSection";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export default function Home() {
+  const [showContactPrompt, setShowContactPrompt] = useState(false);
+
   useEffect(() => {
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
       entries.forEach((entry) => {
@@ -34,7 +42,15 @@ export default function Home() {
       observer.observe(element);
     });
 
-    return () => observer.disconnect();
+    // Set timeout for contact prompt
+    const timer = setTimeout(() => {
+      setShowContactPrompt(true);
+    }, 7000); // 7 seconds delay
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
@@ -68,6 +84,23 @@ export default function Home() {
       <TestimonialsSection />
       <CTASection />
       <ContactForm />
+
+      <AlertDialog open={showContactPrompt} onOpenChange={setShowContactPrompt}>
+        <AlertDialogContent className="sm:max-w-[425px]">
+          <AlertDialogTitle>Need Help?</AlertDialogTitle>
+          <AlertDialogDescription className="text-center">
+            Got a question or interested? Contact us here
+          </AlertDialogDescription>
+          <div className="mt-4 flex justify-center">
+            <Button 
+              onClick={() => setShowContactPrompt(false)}
+              className="bg-primary hover:bg-primary/90"
+            >
+              Got it!
+            </Button>
+          </div>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
