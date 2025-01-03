@@ -13,7 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { ArrowRight, CheckCircle2, Users, Zap, LogIn } from "lucide-react";
+import { ArrowRight, Users, Zap, LogIn, CheckCircle2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const features = [
@@ -59,13 +59,24 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <header className="bg-primary text-primary-foreground py-4 animate-fade-in">
+      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Devircle</h1>
-            <Button asChild variant="outline" className="border-primary-foreground hover:bg-primary-foreground/20">
-              <Link to="/login">Get Started</Link>
-            </Button>
+          <div className="flex h-16 items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Zap className="h-6 w-6 text-primary" />
+              <h1 className="text-xl font-semibold tracking-tight">Devircle</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <Button asChild variant="ghost" size="sm">
+                <Link to="/login">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Sign In
+                </Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link to="/register">Get Started</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </header>
