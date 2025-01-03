@@ -28,7 +28,12 @@ const Login = () => {
       });
 
       if (error) {
-        if (error.message.includes("Invalid login credentials")) {
+        if (error.message.includes("Database error")) {
+          toast.error("System Error", {
+            description: "There was a problem connecting to the database. Please try again later or contact support.",
+            duration: 5000
+          });
+        } else if (error.message.includes("Invalid login credentials")) {
           toast.error("Demo account not found", {
             description: "Please register a new account first.",
             action: {
