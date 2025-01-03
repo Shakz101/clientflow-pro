@@ -1,19 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, FileText, Trash2, Download } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useState } from "react";
+import { DocumentList } from "@/components/documents/DocumentList";
+import { DocumentUpload } from "@/components/documents/DocumentUpload";
 
 const Documents = () => {
   const { id: clientId } = useParams();
@@ -40,8 +31,12 @@ const Documents = () => {
 
     try {
       setUploading(true);
+      const userId = (await supabase.auth.getUser()).data.user?.id;
+      if (!userId) throw new Error("User not authenticated");
+
       const fileExt = file.name.split(".").pop();
-      const filePath = `${clientId}/${crypto.randomUUID()}.${fileExt}`;
+      // Include userId in the storage path to comply with RLS policy
+      const filePath = `${userId}/${clientId}/${crypto.randomUUID()}.${fileExt}`;
 
       // Upload file to storage
       const { error: uploadError } = await supabase.storage
@@ -57,7 +52,7 @@ const Documents = () => {
         file_path: filePath,
         content_type: file.type,
         size: file.size,
-        created_by: (await supabase.auth.getUser()).data.user?.id,
+        created_by: userId,
       });
 
       if (dbError) throw dbError;
@@ -87,7 +82,6 @@ const Documents = () => {
 
       if (error) throw error;
 
-      // Create a download link
       const url = URL.createObjectURL(data);
       const link = document.createElement("a");
       link.href = url;
@@ -107,14 +101,12 @@ const Documents = () => {
 
   const handleDelete = async (id: string, filePath: string) => {
     try {
-      // Delete from storage
       const { error: storageError } = await supabase.storage
         .from("client_documents")
         .remove([filePath]);
 
       if (storageError) throw storageError;
 
-      // Delete from database
       const { error: dbError } = await supabase
         .from("client_documents")
         .delete()
@@ -159,75 +151,15 @@ const Documents = () => {
             Upload and manage documents for this client
           </p>
         </div>
-        <div className="flex items-center gap-4">
-          <Input
-            type="file"
-            onChange={handleFileUpload}
-            disabled={uploading}
-            className="max-w-[300px]"
-          />
-          {uploading && <Loader2 className="h-4 w-4 animate-spin" />}
-        </div>
+        <DocumentUpload onUpload={handleFileUpload} uploading={uploading} />
       </div>
 
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Size</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Uploaded</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {documents?.map((doc) => (
-              <TableRow key={doc.id}>
-                <TableCell className="font-medium">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    {doc.filename}
-                  </div>
-                </TableCell>
-                <TableCell>{formatFileSize(doc.size || 0)}</TableCell>
-                <TableCell>{doc.content_type}</TableCell>
-                <TableCell>
-                  {new Date(doc.created_at).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex items-center justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDownload(doc.file_path, doc.filename)}
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(doc.id, doc.file_path)}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-500" />
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-            {documents?.length === 0 && (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8">
-                  <div className="flex flex-col items-center gap-2">
-                    <FileText className="h-8 w-8 text-muted-foreground" />
-                    <p className="text-muted-foreground">No documents yet</p>
-                  </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <DocumentList
+        documents={documents}
+        onDownload={handleDownload}
+        onDelete={handleDelete}
+        formatFileSize={formatFileSize}
+      />
     </div>
   );
 };
