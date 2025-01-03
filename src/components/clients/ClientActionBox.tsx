@@ -55,16 +55,16 @@ export const ClientActionBox = ({
         </Link>
       </HoverCardTrigger>
       <HoverCardContent 
-        className="glass w-80 border-none bg-gray-900/90 backdrop-blur-lg"
+        className="hover-card-content w-80"
         sideOffset={5}
       >
         <div className="space-y-2">
-          <h4 className="font-semibold text-black">{title}</h4>
-          <p className="text-sm text-black">
+          <h4 className="font-semibold">{title}</h4>
+          <p className="text-sm">
             {tooltip}
           </p>
           {!comingSoon && (
-            <p className="text-sm text-black mt-2">
+            <p className="text-sm mt-2">
               Click to manage {title.toLowerCase()}
             </p>
           )}
