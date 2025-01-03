@@ -127,7 +127,7 @@ export const DocumentList = ({
                   </div>
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </TableBody>
         </Table>
       </div>
