@@ -8,6 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useSidebar } from "@/components/ui/sidebar";
 
 const mockNotifications = [
   {
@@ -25,14 +26,22 @@ const mockNotifications = [
 ];
 
 export function AppHeader() {
+  const { toggleSidebar } = useSidebar();
+
   return (
     <header className="border-b">
       <div className="flex h-16 items-center px-4 gap-4">
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          className="md:hidden"
+          onClick={toggleSidebar}
+        >
           <Menu className="h-6 w-6" />
+          <span className="sr-only">Toggle menu</span>
         </Button>
         <div className="flex-1 flex items-center gap-4 md:gap-8">
-          <h2 className="text-xl font-semibold">Agency Dashboard</h2>
+          <h2 className="text-xl font-semibold truncate">Agency Dashboard</h2>
           <div className="hidden md:flex items-center gap-4 flex-1 max-w-xl">
             <div className="relative flex-1">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />

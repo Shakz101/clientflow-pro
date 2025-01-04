@@ -75,21 +75,23 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <SidebarProvider>
-                    <div className="min-h-screen flex w-full">
+                    <div className="min-h-screen flex w-full overflow-hidden">
                       <AppSidebar />
-                      <div className="flex-1">
+                      <div className="flex-1 flex flex-col min-w-0">
                         <AppHeader />
-                        <Routes>
-                          <Route index element={<Index />} />
-                          <Route path="/clients" element={<Clients />} />
-                          <Route path="/clients/new" element={<NewClient />} />
-                          <Route path="/clients/:id" element={<ClientDetails />} />
-                          <Route path="/clients/:id/communication" element={<Communication />} />
-                          <Route path="/clients/:id/documents" element={<Documents />} />
-                          <Route path="/settings" element={<Settings />} />
-                          <Route path="/profile" element={<Profile />} />
-                          <Route path="*" element={<NotFound />} />
-                        </Routes>
+                        <main className="flex-1 overflow-auto">
+                          <Routes>
+                            <Route index element={<Index />} />
+                            <Route path="/clients" element={<Clients />} />
+                            <Route path="/clients/new" element={<NewClient />} />
+                            <Route path="/clients/:id" element={<ClientDetails />} />
+                            <Route path="/clients/:id/communication" element={<Communication />} />
+                            <Route path="/clients/:id/documents" element={<Documents />} />
+                            <Route path="/settings" element={<Settings />} />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="*" element={<NotFound />} />
+                          </Routes>
+                        </main>
                       </div>
                     </div>
                   </SidebarProvider>
