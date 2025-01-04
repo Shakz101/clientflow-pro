@@ -7,6 +7,7 @@ import { HeroSection } from "@/components/home/HeroSection";
 import { FeaturesSection } from "@/components/home/FeaturesSection";
 import { TestimonialsSection } from "@/components/home/TestimonialsSection";
 import { CTASection } from "@/components/home/CTASection";
+import { Footer } from "@/components/layout/Footer";
 import {
   Tooltip,
   TooltipContent,
@@ -83,6 +84,7 @@ export default function Home() {
       <FeaturesSection />
       <TestimonialsSection />
       <CTASection />
+      <Footer />
       
       <TooltipProvider>
         <Tooltip open={showContactPrompt} onOpenChange={setShowContactPrompt}>
