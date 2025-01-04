@@ -2,7 +2,7 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/lib/supabase";
 import { useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Wand2 } from "lucide-react";
 import { toast } from "sonner";
@@ -121,12 +121,6 @@ const Login = () => {
               },
             }}
           />
-
-          <div className="mt-4 text-center">
-            <Link to="/register" className="text-blue-600 hover:underline">
-              Don't have an account? Sign up
-            </Link>
-          </div>
         </div>
       </div>
     </div>
