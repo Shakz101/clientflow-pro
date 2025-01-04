@@ -108,7 +108,7 @@ const Login = () => {
                   button_label: 'Sign in',
                   loading_button_label: 'Signing in...',
                   social_provider_text: 'Sign in with {{provider}}',
-                  link_text: "Already have an account? Sign in",
+                  link_text: '',
                 },
                 sign_up: {
                   email_label: 'Email address',
@@ -116,7 +116,7 @@ const Login = () => {
                   button_label: 'Sign up',
                   loading_button_label: 'Signing up...',
                   social_provider_text: 'Sign up with {{provider}}',
-                  link_text: "Don't have an account? Sign up",
+                  link_text: '',
                 },
               },
             }}
