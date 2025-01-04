@@ -8,7 +8,7 @@ export function Footer() {
           <p className="text-center text-sm leading-loose md:text-left">
             Built by{" "}
             <a
-              href="#"
+              href="https://www.devircle.com"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
@@ -18,29 +18,13 @@ export function Footer() {
             . All rights reserved.
           </p>
         </div>
-        <nav className="flex items-center space-x-6">
+        <nav className="flex items-center">
           <Link
             to="/privacy-policy"
             className="text-sm font-medium underline-offset-4 hover:underline"
           >
             Privacy Policy
           </Link>
-          <a
-            href="https://twitter.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-medium underline-offset-4 hover:underline"
-          >
-            Twitter
-          </a>
-          <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm font-medium underline-offset-4 hover:underline"
-          >
-            GitHub
-          </a>
         </nav>
       </div>
     </footer>
