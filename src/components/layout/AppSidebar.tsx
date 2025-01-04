@@ -8,8 +8,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const menuItems = [
   { title: "Dashboard", icon: Home, path: "/dashboard" },
@@ -19,12 +20,19 @@ const menuItems = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { setOpenMobile } = useSidebar();
 
   const isActive = (path: string) => {
     if (path === "/dashboard") {
       return location.pathname === "/dashboard";
     }
     return location.pathname.startsWith(path);
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setOpenMobile(false); // Close mobile menu after navigation
   };
 
   return (
@@ -41,10 +49,10 @@ export function AppSidebar() {
                     isActive={isActive(item.path)}
                     className="text-foreground hover:text-primary"
                   >
-                    <Link to={item.path}>
+                    <button onClick={() => handleNavigation(item.path)}>
                       <item.icon className="h-4 w-4" />
                       <span>{item.title}</span>
-                    </Link>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -52,13 +60,15 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
         <SidebarGroup className="mt-auto pb-4">
-          <Link
-            to="/dashboard/clients/new"
+          <button
+            onClick={() => {
+              handleNavigation("/dashboard/clients/new");
+            }}
             className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-accent rounded-md"
           >
             <PlusCircle className="h-4 w-4" />
             Add New Client
-          </Link>
+          </button>
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
