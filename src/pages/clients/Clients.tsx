@@ -12,21 +12,49 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 
 const Clients = () => {
-  const { data: clients, isLoading } = useQuery({
+  const { toast } = useToast();
+
+  // First fetch the session to ensure we're authenticated
+  const { data: session, isLoading: isLoadingSession } = useQuery({
+    queryKey: ['session'],
+    queryFn: async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      return session;
+    },
+  });
+
+  // Then fetch clients only if we have a session
+  const { data: clients, isLoading: isLoadingClients, error } = useQuery({
     queryKey: ['clients'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('clients')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching clients:', error);
+        throw error;
+      }
       return data;
     },
+    enabled: !!session?.user?.id, // Only run query if we have a session
   });
 
-  if (isLoading) {
+  // Handle any errors
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: "Error fetching clients",
+      description: "Please try refreshing the page.",
+    });
+  }
+
+  // Show loading state while session or data is loading
+  if (isLoadingSession || isLoadingClients) {
     return (
       <div className="container py-6">
         <div className="glass rounded-2xl p-8 mb-8">
@@ -62,7 +90,7 @@ const Clients = () => {
       </div>
 
       <div className="glass rounded-2xl p-6">
-        {clients?.length === 0 ? (
+        {!clients || clients.length === 0 ? (
           <div className="text-center py-12">
             <h3 className="text-lg font-semibold mb-2">No clients yet</h3>
             <p className="text-muted-foreground mb-4">
@@ -87,7 +115,7 @@ const Clients = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {clients?.map((client) => (
+              {clients.map((client) => (
                 <TableRow key={client.id}>
                   <TableCell className="font-medium">{client.name}</TableCell>
                   <TableCell>{client.email}</TableCell>
