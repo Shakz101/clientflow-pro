@@ -1,7 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Link } from "react-router-dom";
-import { Eye, PlusCircle } from "lucide-react";
+import { Eye, PlusCircle, LayoutGrid, Table as TableIcon, Trash2, CheckSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -13,9 +13,25 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const Clients = () => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isGridView, setIsGridView] = useState(false);
+  const [selectedClients, setSelectedClients] = useState<string[]>([]);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   // First fetch the session to ensure we're authenticated
   const { data: session, isLoading: isLoadingSession } = useQuery({
@@ -41,8 +57,57 @@ const Clients = () => {
       }
       return data;
     },
-    enabled: !!session?.user?.id, // Only run query if we have a session
+    enabled: !!session?.user?.id,
   });
+
+  // Bulk delete mutation
+  const bulkDeleteMutation = useMutation({
+    mutationFn: async (clientIds: string[]) => {
+      const { error } = await supabase
+        .from('clients')
+        .delete()
+        .in('id', clientIds);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['clients'] });
+      toast({
+        title: "Success",
+        description: "Selected clients have been deleted",
+      });
+      setSelectedClients([]);
+    },
+    onError: (error) => {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Failed to delete clients. Please try again.",
+      });
+      console.error('Delete error:', error);
+    },
+  });
+
+  const handleBulkDelete = async () => {
+    await bulkDeleteMutation.mutateAsync(selectedClients);
+    setShowDeleteDialog(false);
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedClients.length === clients?.length) {
+      setSelectedClients([]);
+    } else {
+      setSelectedClients(clients?.map(client => client.id) || []);
+    }
+  };
+
+  const toggleClientSelection = (clientId: string) => {
+    setSelectedClients(prev => 
+      prev.includes(clientId)
+        ? prev.filter(id => id !== clientId)
+        : [...prev, clientId]
+    );
+  };
 
   // Handle any errors
   if (error) {
@@ -80,12 +145,36 @@ const Clients = () => {
               Manage and view all your clients
             </p>
           </div>
-          <Button asChild className="glass-button border-none">
-            <Link to="/dashboard/clients/new">
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Add New Client
-            </Link>
-          </Button>
+          <div className="flex gap-2">
+            {selectedClients.length > 0 && (
+              <Button
+                variant="destructive"
+                onClick={() => setShowDeleteDialog(true)}
+                className="mr-2"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete Selected ({selectedClients.length})
+              </Button>
+            )}
+            <Button
+              variant="outline"
+              onClick={() => setIsGridView(!isGridView)}
+              className="mr-2"
+            >
+              {isGridView ? (
+                <TableIcon className="mr-2 h-4 w-4" />
+              ) : (
+                <LayoutGrid className="mr-2 h-4 w-4" />
+              )}
+              {isGridView ? "Table View" : "Grid View"}
+            </Button>
+            <Button asChild className="glass-button border-none">
+              <Link to="/dashboard/clients/new">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add New Client
+              </Link>
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -103,10 +192,53 @@ const Clients = () => {
               </Link>
             </Button>
           </div>
+        ) : isGridView ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {clients.map((client) => (
+              <div
+                key={client.id}
+                className="relative p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
+              >
+                <div className="absolute top-2 left-2">
+                  <Checkbox
+                    checked={selectedClients.includes(client.id)}
+                    onCheckedChange={() => toggleClientSelection(client.id)}
+                  />
+                </div>
+                <div className="pt-6">
+                  <h3 className="font-semibold text-lg">{client.name}</h3>
+                  <p className="text-sm text-muted-foreground">{client.email}</p>
+                  <div className="mt-2 text-sm">
+                    <p>Tools: {client.tools?.join(", ") || "—"}</p>
+                    <p>Created: {new Date(client.created_at).toLocaleDateString()}</p>
+                  </div>
+                  <div className="mt-4">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      asChild
+                      className="w-full"
+                    >
+                      <Link to={`/dashboard/clients/${client.id}`}>
+                        <Eye className="h-4 w-4 mr-2" />
+                        View Details
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">
+                  <Checkbox
+                    checked={selectedClients.length === clients.length}
+                    onCheckedChange={toggleSelectAll}
+                  />
+                </TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Tools</TableHead>
@@ -117,6 +249,12 @@ const Clients = () => {
             <TableBody>
               {clients.map((client) => (
                 <TableRow key={client.id}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedClients.includes(client.id)}
+                      onCheckedChange={() => toggleClientSelection(client.id)}
+                    />
+                  </TableCell>
                   <TableCell className="font-medium">{client.name}</TableCell>
                   <TableCell>{client.email}</TableCell>
                   <TableCell>{client.tools?.join(", ") || "—"}</TableCell>
@@ -141,6 +279,27 @@ const Clients = () => {
           </Table>
         )}
       </div>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the selected clients
+              and all their associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
