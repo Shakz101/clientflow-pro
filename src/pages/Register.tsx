@@ -54,6 +54,7 @@ const Register = () => {
 
   const handleSubmit = async () => {
     try {
+      // First, sign up the user
       const { data: authData, error: signUpError } = await supabase.auth.signUp({
         email: registrationData.email,
         password: registrationData.password!,
@@ -79,29 +80,41 @@ const Register = () => {
         return;
       }
 
-      if (authData.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({
-            company_name: registrationData.companyName,
-            contact_person: registrationData.contactPerson,
-            email: registrationData.email,
-            phone: registrationData.phone,
-            business_type: registrationData.businessType,
-            other_business_type: registrationData.otherBusinessType,
-            selected_tools: registrationData.selectedTools,
-            other_tools: registrationData.otherTools,
-          })
-          .eq('id', authData.user.id);
+      if (!authData.user?.id) {
+        toast.error("Registration failed", {
+          description: "Could not create user account. Please try again.",
+          duration: 5000
+        });
+        return;
+      }
 
-        if (profileError) {
-          console.error("Error updating profile:", profileError);
-          toast.error("Failed to save profile details", {
-            description: "Your account was created but some details couldn't be saved. You can update them later in your profile.",
-            duration: 5000
-          });
-          return;
-        }
+      // Then, update the profile with user details
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .upsert({
+          id: authData.user.id,
+          company_name: registrationData.companyName,
+          contact_person: registrationData.contactPerson,
+          email: registrationData.email,
+          phone: registrationData.phone,
+          business_type: registrationData.businessType,
+          other_business_type: registrationData.otherBusinessType,
+          selected_tools: registrationData.selectedTools,
+          other_tools: registrationData.otherTools,
+          updated_at: new Date().toISOString()
+        }, {
+          onConflict: 'id'
+        });
+
+      if (profileError) {
+        console.error("Error updating profile:", profileError);
+        toast.error("Profile details couldn't be saved", {
+          description: "Your account was created but some details couldn't be saved. You can update them later in your profile.",
+          duration: 5000
+        });
+        // Still navigate to login since the account was created
+        setTimeout(() => navigate("/login"), 2000);
+        return;
       }
 
       toast.success("Registration successful!", {
@@ -114,11 +127,11 @@ const Register = () => {
       }, 2000);
       
     } catch (error: any) {
+      console.error("Registration error:", error);
       toast.error("An unexpected error occurred", {
         description: "Please try again later.",
         duration: 5000
       });
-      console.error("Registration error:", error);
     }
   };
 
