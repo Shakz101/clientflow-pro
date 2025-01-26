@@ -1,7 +1,11 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { Link } from "react-router-dom";
-import { Eye, PlusCircle, LayoutGrid, Table as TableIcon, Trash2, CheckSquare } from "lucide-react";
+import { 
+  Eye, PlusCircle, LayoutGrid, Table as TableIcon, Trash2, 
+  Mail, Download, Upload, Copy, Share, Settings,
+  Check, X
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -25,6 +29,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Clients = () => {
   const { toast } = useToast();
@@ -88,6 +100,13 @@ const Clients = () => {
     },
   });
 
+  const handleBulkAction = (action: string) => {
+    toast({
+      title: "Bulk Action",
+      description: `${action} action for ${selectedClients.length} clients will be implemented soon.`,
+    });
+  };
+
   const handleBulkDelete = async () => {
     await bulkDeleteMutation.mutateAsync(selectedClients);
     setShowDeleteDialog(false);
@@ -147,14 +166,67 @@ const Clients = () => {
           </div>
           <div className="flex gap-2">
             {selectedClients.length > 0 && (
-              <Button
-                variant="destructive"
-                onClick={() => setShowDeleteDialog(true)}
-                className="mr-2"
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete Selected ({selectedClients.length})
-              </Button>
+              <>
+                <Button
+                  variant="destructive"
+                  onClick={() => setShowDeleteDialog(true)}
+                  className="mr-2"
+                >
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete ({selectedClients.length})
+                </Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                      <Settings className="mr-2 h-4 w-4" />
+                      Advanced
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>Bulk Actions</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Email")}>
+                      <Mail className="mr-2 h-4 w-4" />
+                      Send Email
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Export")}>
+                      <Download className="mr-2 h-4 w-4" />
+                      Export Data
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Share")}>
+                      <Share className="mr-2 h-4 w-4" />
+                      Share Access
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuSeparator />
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Status Update")}>
+                      <Check className="mr-2 h-4 w-4" />
+                      Update Status
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Tools")}>
+                      <Settings className="mr-2 h-4 w-4" />
+                      Manage Tools
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuSeparator />
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Copy")}>
+                      <Copy className="mr-2 h-4 w-4" />
+                      Duplicate
+                    </DropdownMenuItem>
+                    
+                    <DropdownMenuItem onClick={() => handleBulkAction("Archive")}>
+                      <X className="mr-2 h-4 w-4" />
+                      Archive
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </>
             )}
             <Button
               variant="outline"
@@ -178,107 +250,92 @@ const Clients = () => {
         </div>
       </div>
 
-      <div className="glass rounded-2xl p-6">
-        {!clients || clients.length === 0 ? (
-          <div className="text-center py-12">
-            <h3 className="text-lg font-semibold mb-2">No clients yet</h3>
-            <p className="text-muted-foreground mb-4">
-              Get started by adding your first client
-            </p>
-            <Button asChild>
-              <Link to="/dashboard/clients/new">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Add New Client
-              </Link>
-            </Button>
-          </div>
-        ) : isGridView ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {isGridView ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {clients.map((client) => (
+            <div
+              key={client.id}
+              className="relative p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
+            >
+              <div className="absolute top-2 left-2">
+                <Checkbox
+                  checked={selectedClients.includes(client.id)}
+                  onCheckedChange={() => toggleClientSelection(client.id)}
+                />
+              </div>
+              <div className="pt-6">
+                <h3 className="font-semibold text-lg">{client.name}</h3>
+                <p className="text-sm text-muted-foreground">{client.email}</p>
+                <div className="mt-2 text-sm">
+                  <p>Tools: {client.tools?.join(", ") || "—"}</p>
+                  <p>Created: {new Date(client.created_at).toLocaleDateString()}</p>
+                </div>
+                <div className="mt-4">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    asChild
+                    className="w-full"
+                  >
+                    <Link to={`/dashboard/clients/${client.id}`}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Details
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[50px]">
+                <Checkbox
+                  checked={selectedClients.length === clients.length}
+                  onCheckedChange={toggleSelectAll}
+                />
+              </TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Email</TableHead>
+              <TableHead>Tools</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
             {clients.map((client) => (
-              <div
-                key={client.id}
-                className="relative p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
-              >
-                <div className="absolute top-2 left-2">
+              <TableRow key={client.id}>
+                <TableCell>
                   <Checkbox
                     checked={selectedClients.includes(client.id)}
                     onCheckedChange={() => toggleClientSelection(client.id)}
                   />
-                </div>
-                <div className="pt-6">
-                  <h3 className="font-semibold text-lg">{client.name}</h3>
-                  <p className="text-sm text-muted-foreground">{client.email}</p>
-                  <div className="mt-2 text-sm">
-                    <p>Tools: {client.tools?.join(", ") || "—"}</p>
-                    <p>Created: {new Date(client.created_at).toLocaleDateString()}</p>
-                  </div>
-                  <div className="mt-4">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className="w-full"
-                    >
-                      <Link to={`/dashboard/clients/${client.id}`}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
-                      </Link>
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[50px]">
-                  <Checkbox
-                    checked={selectedClients.length === clients.length}
-                    onCheckedChange={toggleSelectAll}
-                  />
-                </TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Tools</TableHead>
-                <TableHead>Created At</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                </TableCell>
+                <TableCell className="font-medium">{client.name}</TableCell>
+                <TableCell>{client.email}</TableCell>
+                <TableCell>{client.tools?.join(", ") || "—"}</TableCell>
+                <TableCell>
+                  {new Date(client.created_at).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    asChild
+                  >
+                    <Link to={`/dashboard/clients/${client.id}`}>
+                      <Eye className="h-4 w-4 mr-2" />
+                      View Details
+                    </Link>
+                  </Button>
+                </TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {clients.map((client) => (
-                <TableRow key={client.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedClients.includes(client.id)}
-                      onCheckedChange={() => toggleClientSelection(client.id)}
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{client.name}</TableCell>
-                  <TableCell>{client.email}</TableCell>
-                  <TableCell>{client.tools?.join(", ") || "—"}</TableCell>
-                  <TableCell>
-                    {new Date(client.created_at).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                    >
-                      <Link to={`/dashboard/clients/${client.id}`}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        View Details
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        )}
-      </div>
+            ))}
+          </TableBody>
+        </Table>
+      )}
 
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
